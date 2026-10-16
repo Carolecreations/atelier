@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#faf6ee">
+<title>Mon Atelier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wall:#faf6ee;
+  --paper:#ffffff;
+  --ink:#2a2520;
+  --ink-soft:#6b625a;
+  --pink:#c8312d;
+  --blue:#3a6fd8;
+  --tape:#f5c842;
+  --mint:#d4ece0;
+  --peach:#fde8d8;
+  --line:#e8dfd0;
+  --radius:16px;
+  --radius-sm:10px;
+  --shadow:0 2px 12px rgba(42,37,32,.06),0 1px 3px rgba(42,37,32,.04);
+  --shadow-hover:0 6px 20px rgba(42,37,32,.10),0 2px 6px rgba(42,37,32,.06);
+  --font-display:"Archivo Black",Impact,"Arial Black",sans-serif;
+  --font-body:"Work Sans",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--wall) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  color:var(--ink);
+  font:16px/1.6 var(--font-body);
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  -webkit-font-smoothing:antialiased;
+}
+.w{max-width:1180px;margin:0 auto;padding:16px}
+h1,h2,h3{font-family:var(--font-display);font-weight:400;line-height:1.1;margin:0}
+h1{font-size:clamp(1.9rem,8vw,2.8rem);letter-spacing:-.02em}
+h2{font-size:1.45rem;margin:24px 0 12px;color:var(--ink)}
+h3{font-size:1.05rem;margin:0 0 4px}
+/* Hero adouci */
+.hero{
+  position:relative;
+  border:none;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  margin:4px 0 32px;
+  background:var(--paper);
+}
+.hero img{display:block;width:100%;height:clamp(200px,50vw,320px);object-fit:cover}
+.lab{
+  position:absolute;left:16px;bottom:16px;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(8px);
+  border:none;
+  border-radius:var(--radius-sm);
+  padding:10px 16px;
+  max-width:90%;
+  box-shadow:var(--shadow);
+}
+.lab h1{font-size:clamp(1.3rem,5vw,1.8rem)}
+.sub{margin:2px 0 0;font-size:.85rem;color:var(--ink-soft)}
+/* Langues */
+.lang{position:absolute;top:12px;right:12px;display:flex;gap:6px}
+.lang button{
+  padding:5px 12px;min-height:36px;
+  border-radius:20px;border:1px solid rgba(255,255,255,.6);
+  background:rgba(255,255,255,.75);backdrop-filter:blur(6px);
+  font-size:.85rem;box-shadow:none;
+}
+.lang .on{background:var(--tape);border-color:var(--tape);color:var(--ink)}
+/* Navigation */
+nav{
+  display:flex;gap:6px;overflow-x:auto;
+  margin:12px -16px 20px;padding:8px 16px;
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:5;
+  background:linear-gradient(to bottom,var(--wall) 70%,transparent);
+  scrollbar-width:none;
+}
+nav::-webkit-scrollbar{display:none}
+.shell{display:block}
+main{min-width:0}
+/* Boutons */
+button,.btn{
+  font:600 .92rem var(--font-body);
+  border:1px solid var(--line);
+  background:var(--paper);
+  color:var(--ink);
+  padding:9px 16px;
+  min-height:42px;
+  cursor:pointer;
+  border-radius:var(--radius-sm);
+  box-shadow:var(--shadow);
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:all .18s ease;
+}
+button:active,.btn:active{transform:scale(.97);box-shadow:var(--shadow)}
+@media(hover:hover){button:hover,.btn:hover{box-shadow:var(--shadow-hover);border-color:#d0c8b8}}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:3px solid var(--blue);outline-offset:2px;
+}
+nav button{white-space:nowrap;flex:0 0 auto;border-radius:20px;padding:8px 16px;min-height:38px}
+nav .on,nav button.on{
+  background:var(--ink);color:var(--wall);border-color:var(--ink);
+}
+.go{
+  background:var(--pink);color:#fff;border-color:var(--pink);
+}
+.go:hover{background:#a82824;border-color:#a82824;color:#fff}
+/* Cartes */
+.card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:18px;
+  margin:0 0 16px;
+  transition:box-shadow .18s ease;
+}
+.card:hover{box-shadow:var(--shadow-hover)}
+.row{
+  display:grid;grid-template-columns:3.2rem 1fr;gap:12px;
+  padding:10px 0;border-top:1px solid var(--line);
+}
+.row:first-child{border-top:0}
+.row b{font-family:var(--font-display);font-weight:400;color:var(--blue);font-size:.85rem}
+.row small,.muted{color:var(--ink-soft);font-size:.88rem}
+/* Formulaires */
+label{display:block;font-weight:600;margin:12px 0 4px;font-size:.9rem}
+input,select,textarea{
+  width:100%;font:inherit;padding:10px 12px;
+  border:1px solid var(--line);background:var(--paper);
+  border-radius:var(--radius-sm);
+  transition:border-color .18s ease,box-shadow .18s ease;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--blue);box-shadow:0 0 0 3px rgba(58,111,216,.25);outline:2px solid var(--blue);outline-offset:1px;
+}
+textarea{min-height:140px;resize:vertical}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+/* Œuvres */
+.work{display:grid;grid-template-columns:96px 1fr;gap:14px}
+.work img,.ph{
+  width:96px;height:96px;object-fit:cover;
+  border:none;border-radius:var(--radius-sm);
+  background:var(--peach);
+  box-shadow:var(--shadow);
+}
+.tag{
+  display:inline-block;background:var(--tape);
+  border:none;border-radius:20px;
+  padding:2px 10px;font-size:.8rem;font-weight:600;
+}
+/* Détails / repliable */
+details.card{padding:16px}
+details.card summary{
+  cursor:pointer;font-weight:600;
+  list-style:none;display:flex;align-items:center;gap:6px;
+  color:var(--ink);
+}
+details.card summary::-webkit-details-marker{display:none}
+details.card[open] summary{margin-bottom:8px}
+/* Divers */
+a{color:var(--blue);text-decoration:none;font-weight:500}
+a:hover{text-decoration:underline}
+.chk{display:flex;gap:8px;align-items:center;font-weight:400}
+.chk input{width:auto}
+/* Responsive */
+@media(min-width:600px){
+  body{font-size:17px}
+  .w{padding:20px}
+  nav{flex-wrap:wrap;overflow:visible;position:static;margin:20px 0;padding:0;background:none}
+  .work{grid-template-columns:130px 1fr}
+  .work img,.ph{width:130px;height:130px}
+}
+@media(min-width:960px){
+  .shell{display:grid;grid-template-columns:210px 1fr;gap:32px;align-items:start}
+  nav{flex-direction:column;flex-wrap:nowrap;position:sticky;top:16px;margin:0;background:none}
+  nav button{width:100%;justify-content:flex-start}
+  main{max-width:880px}
+  .hero img{height:340px}
+}
+@media(max-width:480px){.g2{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+#upd{position:sticky;top:0;z-index:60;background:var(--tape,#efb82d);border-bottom:2px solid var(--ink,#1b1814);padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top,0px));display:flex;gap:10px;align-items:center;flex-wrap:wrap}#upd[hidden]{display:none}
+#ask{position:fixed;inset:0;z-index:100;background:rgba(27,24,20,.45);display:flex;align-items:center;justify-content:center;padding:20px}#ask[hidden]{display:none}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:90;background:var(--ink,#1b1814);color:#fff;padding:10px 14px;border-radius:var(--radius-sm,10px);display:flex;gap:14px;align-items:center;box-shadow:0 6px 20px rgba(0,0,0,.3);max-width:calc(100% - 28px)}#toast[hidden]{display:none}#toast button{min-height:36px;padding:4px 12px}#ask .box{background:var(--paper,#fff);border:2px solid var(--ink,#1b1814);border-radius:var(--radius-sm,10px);padding:18px;max-width:420px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,.25)}#ask p{margin:0 0 14px;font-weight:600}
+.big{font-size:clamp(2.2rem,9vw,4.2rem);line-height:1.02;margin:0 0 12px;letter-spacing:-.02em}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:22px 0}
+.feat button{display:block;text-align:left;width:100%;padding:16px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);cursor:pointer;font:inherit;color:inherit}
+.feat button b{display:block;font-family:var(--font-display);font-weight:400;margin-bottom:4px}
+</style></head><body><div id="upd" hidden role="status"></div><div id="toast" hidden role="status" aria-live="polite"></div><div id="ask" hidden role="alertdialog" aria-modal="true" aria-labelledby="askm"><div class="box"><p id="askm"></p><div class="acts" style="margin:0;justify-content:flex-end"><button id="askn"></button><button id="asky" class="go"></button></div></div></div><div class="w">
+<header class="hero"><div style="position:relative"><div id="cover"></div></div>
+<div class="lab"><h1 id="artistName">Mon Atelier</h1><p class="sub" id="sub"></p></div>
+<div class="lang"><button id="lf" onclick="L('fr')">FR</button><button id="le" onclick="L('en')">EN</button></div></div></header>
+<div class="shell"><nav id="nav"></nav><main id="app"></main></div>
+<div id="rcpt" hidden></div>
+<script>
+const APP_VERSION='2026-10-16.3';
+const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const qnorm=s=>String(s==null?'':s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const qmatch=(q,fields)=>!q?true:fields.some(f=>qnorm(f).includes(qnorm(q)));
+let _qt;
+function setQ(k,v){
+  S[k]=v;save();
+  clearTimeout(_qt);
+  _qt=setTimeout(()=>{
+    const a=document.activeElement,id=a&&a.id,pos=a&&a.selectionStart;
+    R();
+    if(id){const e=document.getElementById(id);if(e){e.focus();try{e.setSelectionRange(pos,pos)}catch(_){}}}
+  },180);
+}
+/* ===== Configuration externe (facultative) ===== */
+window.__ATELIER_CONFIG = null;
+try { const s=JSON.parse(localStorage.getItem('atelier_config')||'null'); if(s)window.__ATELIER_CONFIG=s; } catch(e){}
+window.addEventListener('message',function(event){
+  if(event.data && event.data.type==='atelier:config'){
+    window.__ATELIER_CONFIG=event.data.config;
+    try{localStorage.setItem('atelier_config',JSON.stringify(event.data.config))}catch(e){}
+    if(typeof applyConfig==='function')applyConfig();
+  }
+});
+function applyConfig(){
+  const cfg=window.__ATELIER_CONFIG; if(!cfg)return;
+  if(cfg.artistName){S.sig=cfg.artistName;const el=document.getElementById('artistName');if(el)el.textContent=cfg.artistName}
+  if(cfg.site)S.lk.site=cfg.site;
+  if(cfg.instagram)S.lk.ig=cfg.instagram;
+  if(cfg.portfolio)S.purl=cfg.portfolio;
+  if(cfg.zone)S.zone=cfg.zone;
+  if(typeof R==='function')R();
+}
+
+let S={lang:'fr',tab:'a',works:[],contacts:[],sig:'',zone:'',zones:[],tags:'',cover:'',c:{type:'work',title:'',date:'',place:'',note:'',link:'',l:'both'},wq:'',kq:'',kopen:null};
+try{Object.assign(S,JSON.parse(localStorage.getItem('atelier_v2')||'{}'))}catch(e){}
+if(S.purl==null)S.purl='';if(!Array.isArray(S.zones))S.zones=[];if(!Array.isArray(S.topics))S.topics=[];
+S.lk=Object.assign({site:'',ig:'',pf:S.purl,fb:'',tk:'',li:''},S.lk||{});
+setTimeout(applyConfig,200);
+if(S.c&&!S.c.inc)S.c.inc={site:1,ig:1,pf:0};
+/* ===== FACTURES : valeurs par défaut ===== */
+if(!S.invoices)S.invoices=[];
+if(!S.artist)S.artist={name:'',addr:'',email:'',phone:'',tax:'',cur:'€',terms:''};
+if(!S.invPfx)S.invPfx='F';
+if(S.invYear==null)S.invYear=new Date().getFullYear();
+if(S.invSeq==null)S.invSeq=1;
+const save=()=>{try{localStorage.setItem('atelier_v2',JSON.stringify(S))}catch(e){alert(i('Stockage plein : retirez une photo.','Storage full: remove a photo.'))}};
+const fr=()=>S.lang==='fr',i=(a,b)=>fr()?a:b;
+const CAT=[['Client','Clients','Clients'],['Interested','Intéressés','Interested'],['Friend','Amis','Friends'],['Shopkeeper','Commerçants','Shopkeepers'],['Gallery','Galeries','Galleries'],['Press','Presse','Press'],['Other','Autres','Other']];
+const TABS=[['a',['Accueil','Home']],['h',['Atelier','Studio']],['w',['Créations','Creations']],['v',['Ventes','Sales']],['f',['Factures','Invoices']],['k',['Contacts','Contacts']],['m',['Commerces','Shops']],['c',['Communiquer','Reach out']],['o',['Opportunités','Opportunities']],['p',['Parcours','Background']],['r',['Réglages','Settings']],['g',['Guide','Guide']]];
+const EX=[];
+function L(l){S.lang=l;save();R()}
+function T(t){S.tab=t;S.sv=null;if(t!=='f'){S.fv=null;S.fset=false}save();R();scrollTo(0,0)}
+function R(){document.documentElement.lang=S.lang;
+$('#lf').className=fr()?'on':'';$('#le').className=fr()?'':'on';
+$('#sub').hidden=true;buildZ();
+{const nm=S.sig;$('#artistName').textContent=nm?(fr()?'L’atelier de ':'The studio of ')+nm:(fr()?'Mon Atelier':'My Studio');
+$('#cover').style.cssText='height:clamp(180px,40vw,280px);background:'+(S.cover?'url("'+S.cover.replace(/["\\()]/g,'')+'") center/cover':'linear-gradient(135deg,#1a1a20 0%,#3a6fd8 60%,#f5c842 100%)');}
+$('#nav').innerHTML=TABS.map(t=>`<button class="${S.tab==t[0]?'on':''}" onclick="T('${t[0]}')">${t[1][fr()?0:1]}</button>`).join('');
+$('#app').innerHTML={a:ACC,r:SET,h:H,p:P,w:W,v:V,c:C,k:K,m:M,o:O,f:F,g:G}[S.tab]()}
+function P(){return `<div class="card"><h2 style="margin-top:0">${i('Démarche','About')}</h2>
+<p>${i("Présentez ici votre démarche. Ce texte apparaîtra dans l'onglet Parcours.","Present your approach here. This text will appear in the Background tab.")}</p>
+${S.purl?`<p><a href="${esc(S.purl)}" target="_blank" rel="noopener">${i('Portfolio en ligne','Online portfolio')}</a></p>`:''}</div><div class="card"><h2 style="margin-top:0">${i('Expositions','Exhibitions')}</h2>${EX.length?EX.map(e=>`<div class="row"><b>${e[0]}</b><div>${i(e[1],e[2])}<br><small>${e[3]}</small></div></div>`).join(''):`<p class="muted">${i('Aucune exposition enregistrée pour le moment.','No exhibitions saved yet.')}</p>`}</div>
+<div class="card"><h2 style="margin-top:0">${i('Résidences et ateliers','Residencies and workshops')}</h2>
+<p class="muted">${i('Ajoutez vos résidences et ateliers au fil du temps.','Add your residencies and workshops over time.')}</p></div>
+<div class="card"><h2 style="margin-top:0">${i('Formation','Education')}</h2><p class="muted">${i('Votre parcours de formation.','Your education path.')}</p></div>`}
+const ST={a:['Disponible','Available'],s:['Vendue','Sold'],c:['Sur commande','Commission']};
+function W(){
+  const q=S.wq||'';
+  const list=S.works.map((x,n)=>({x,n})).filter(({x})=>{
+    if(S.wf&&S.wf!='all'&&(x.g||'done')!=S.wf)return false;
+    return qmatch(q,[x.t,x.k,x.s,x.y,x.nt,x.p]);
+  });
+  const w=list.map(({x,n})=>`<div class="card work">${x.img?`<img src="${esc(x.img)}" alt="${esc(x.t)}">`:'<div class="ph"></div>'}<div><h3>${esc(x.t)}</h3><div class="muted">${esc(x.k)} ${esc(x.s)} ${x.y?'· '+esc(x.y):''}</div>${x.nt?`<div>${esc(x.nt)}</div>`:''}<p style="margin:6px 0"><span class="tag">${ST[x.st][fr()?0:1]}</span> <select aria-label="${i('Étape','Stage')}" style="width:auto;padding:2px 6px;font-size:.85rem" onchange="S.works[${n}].g=this.value;save();R()">${GS.map(g=>`<option value="${g[0]}" ${(x.g||'done')==g[0]?'selected':''}>${g[fr()?1:2]}</option>`).join('')}</select> ${x.p?`<b>${esc(x.p)}</b>`:''}</p>
+<div class="acts" style="margin-top:6px"><button onclick="ann(${n})">${i('Annoncer','Announce')}</button><button onclick="S.sv=${n};S.tab='v';save();R()">${i('Plan de vente','Sales plan')}</button><button onclick="dw(${n})">${i('Supprimer','Delete')}</button></div></div></div>`).join('');
+  const counts=[['all','Tout','All',S.works.length]].concat(GS.map(g=>[g[0],g[1],g[2],S.works.filter(x=>(x.g||'done')==g[0]).length]));
+  const has=S.works.length>0;
+  return `${has?`<div class="card" style="padding:10px"><input id="wq" value="${esc(q)}" placeholder="${i('Rechercher une œuvre…','Search a work…')}" oninput="setQ('wq',this.value)" style="margin:0"></div>
+<div class="acts" style="margin:0 0 12px">${counts.map(c=>`<button style="${(S.wf||'all')==c[0]?'background:var(--tape)':''}" onclick="S.wf='${c[0]}';save();R()">${c[fr()?1:2]} (${c[3]})</button>`).join('')}</div>`:''}
+${w||(q?`<p class="muted">${i('Aucune œuvre ne correspond à cette recherche.','No works match this search.')}</p>`:has?'':`<p class="muted">${i('Aucune œuvre pour le moment.','No works yet.')}</p>`)}
+<details class="card" ${has?'':'open'}><summary style="cursor:pointer;font-weight:600">${i('＋ Ajouter une idée ou une œuvre','＋ Add an idea or a work')}</summary>
+<label for="wt">${i('Titre','Title')}</label><input id="wt">
+<label for="wk">${i('Technique','Medium')}</label><input id="wk" placeholder="${i('Technique mixte sur toile','Mixed media on canvas')}">
+<div class="g2"><div><label for="ws">${i('Dimensions','Size')}</label><input id="ws" placeholder="70 x 40 cm"></div><div><label for="wy">${i('Année','Year')}</label><input id="wy" inputmode="numeric"></div>
+<div><label for="wp">${i('Prix','Price')}</label><input id="wp" placeholder="${esc(S.artist.cur||'€')}"></div><div><label for="wst">${i('Statut','Status')}</label><select id="wst">${Object.keys(ST).map(k=>`<option value="${k}">${ST[k][fr()?0:1]}</option>`).join('')}</select></div></div>
+<label for="wg">${i('Étape','Stage')}</label><select id="wg">${GS.map(g=>`<option value="${g[0]}" ${g[0]=='done'?'selected':''}>${g[fr()?1:2]}</option>`).join('')}</select><label for="wn">${i('Notes (où, à qui, comment)','Notes (where, to whom, how)')}</label><textarea id="wn" style="min-height:70px"></textarea><label for="wi">Photo</label><input id="wi" type="file" accept="image/*">
+<div class="acts"><button class="go" onclick="aw()">${i('Enregistrer','Save')}</button></div></details>`
+}
+function aw(){const t=$('#wt').value.trim();if(!t){$('#wt').focus();return}
+const o={t,k:$('#wk').value,s:$('#ws').value,y:$('#wy').value,p:$('#wp').value,st:$('#wst').value,g:$('#wg').value,nt:$('#wn').value,img:''},f=$('#wi').files[0];
+const done=()=>{S.works.unshift(o);save();R()};
+if(!f)return done();const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,600/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);o.img=c.toDataURL('image/jpeg',.72);done()};im.src=r.result};r.readAsDataURL(f)}
+function dw(n){const w=S.works[n];if(!w)return;ask(i('Supprimer cette œuvre ?','Delete this work?'),i('Supprimer','Delete'),()=>{const k=S.works.indexOf(w);if(k<0)return;const item=S.works.splice(k,1)[0];save();R();toast(i('Œuvre supprimée','Work deleted'),()=>{S.works.splice(Math.min(k,S.works.length),0,item);save();R()})})}
+function ann(n){const x=S.works[n];S.c.type='work';S.c.title=x.t;S.c.note=[x.k,x.s,x.p].filter(Boolean).join(', ');save();T('c')}
+const TY={work:['Nouvelle œuvre','New work'],expo:['Prochaine expo','Upcoming show'],project:['Projet en cours','Work in progress'],workshop:['Atelier','Workshop'],portfolio:['Portfolio','Portfolio'],site:['Mon site','My website'],insta:['Mon Instagram','My Instagram']};
+function part(l){const c=S.c,j=l==='fr'?0:1,t=c.title||'…',w=c.date?[' le ',' on '][j]+c.date:'',p=c.place?[' à ',' at '][j]+c.place:'';
+const line={work:['Je suis heureux(se) de vous présenter ma nouvelle création : « '+t+' ».','I’m delighted to share my new piece: “'+t+'”.'],expo:['Rendez-vous'+w+p+' pour « '+t+' ».','Join me'+w+p+' for “'+t+'”.'],project:['Je vous partage un projet en cours : « '+t+' ».','Here’s a peek at what I’m working on: “'+t+'”.'],workshop:['Je vous invite à mon atelier « '+t+' »'+w+p+'.','You’re invited to my workshop “'+t+'”'+w+p+'.'],portfolio:['Je vous invite à découvrir mon portfolio.','I invite you to discover my portfolio.'],site:['Je vous invite à découvrir mon site.','I invite you to visit my website.'],insta:['Retrouvez-moi sur Instagram.','Find me on Instagram.']}[c.type][j];
+const lab=({portfolio:['Voir le portfolio : ','View the portfolio: '],site:['Mon site : ','My website: '],insta:['Mon Instagram : ','My Instagram: ']}[c.type]||['Plus d’infos : ','More info: ']);
+let ex=(c.note?'\n\n'+c.note:'')+(c.link?'\n\n'+lab[j]+c.link:'');
+const LN={site:['Mon site : ','My website: '],ig:['Instagram : ','Instagram: '],pf:['Portfolio : ','Portfolio: '],fb:['Facebook : ','Facebook: '],tk:['TikTok : ','TikTok: '],li:['LinkedIn : ','LinkedIn: ']};
+const lks=Object.keys(LN).filter(k=>(c.inc||{})[k]&&S.lk[k]&&S.lk[k]!==c.link).map(k=>LN[k][j]+S.lk[k]).join('\n');
+if(lks)ex+='\n\n'+lks;
+return{s:TY[c.type][j]+' — '+t,m:[['Bonjour,','Hello,'][j],line+ex,[`Chaleureusement,\n${S.sig||'[Prénom]'}`,`Warm regards,\n${S.sig||'[Prénom]'}`][j],['Répondez STOP pour ne plus recevoir mes nouvelles.','Reply STOP to stop receiving my news.'][j]],ig:line+ex+(S.tags?'\n\n'+S.tags:'')}}
+function gen(){const l=S.c.l,ls=l==='both'?['fr','en']:[l],ps=ls.map(part);
+$('#sj').value=ps.map(p=>p.s).join(' / ');
+$('#bd').value=ps.map(p=>p.m.slice(0,3).join('\n\n')).join('\n\n———\n\n')+'\n\n'+ps.map(p=>p.m[3]).join(' / ');
+$('#ig').value=ps.map(p=>p.ig).join('\n\n———\n\n');$('#out').hidden=false}
+function f(k,v){S.c[k]=v;save()}
+function C(){const c=S.c,fd=(k,lab,ph)=>`<label for="c_${k}">${lab}</label><input id="c_${k}" value="${esc(c[k])}" placeholder="${ph||''}" oninput="f('${k}',this.value)">`;
+return `${LKC()}
+<div class="card"><h2 style="margin-top:0">${i('Préparer un message','Write a message')}</h2>
+<label for="c_type">${i('Sujet','Subject')}</label><select id="c_type" onchange="f('type',this.value)">${Object.keys(TY).map(k=>`<option value="${k}" ${c.type==k?'selected':''}>${TY[k][fr()?0:1]}</option>`).join('')}</select>
+${fd('title',i('Titre','Title'))}<div class="g2"><div>${fd('date',i('Date','Date'),'12 / 11')}</div><div>${fd('place',i('Lieu','Place'))}</div></div>
+${fd('note',i('Un mot de plus (facultatif)','A few more words (optional)'))}${fd('link',i('Lien (facultatif)','Link (optional)'),'https://')}
+<div style="margin-top:10px"><b style="font-size:.9rem">${i('Joindre mes adresses','Attach my links')}</b><div class="acts" style="margin:6px 0 0">${[['site',i('Site','Website')],['ig','Instagram'],['pf','Portfolio'],['fb','Facebook'],['tk','TikTok'],['li','LinkedIn']].map(a=>`<label class="chk" style="margin:0"><input type="checkbox" ${(c.inc||{})[a[0]]?'checked':''} onchange="S.c.inc=S.c.inc||{};S.c.inc['${a[0]}']=this.checked;save()"> ${a[1]}</label>`).join('')}</div></div>
+<label for="c_l">${i('Langue','Language')}</label><select id="c_l" onchange="f('l',this.value)"><option value="both" ${c.l=='both'?'selected':''}>FR + EN</option><option value="fr" ${c.l=='fr'?'selected':''}>Français</option><option value="en" ${c.l=='en'?'selected':''}>English</option></select>
+<label for="c_sig">${i('Signature','Signature')}</label><input id="c_sig" value="${esc(S.sig)}" oninput="S.sig=this.value;save()">
+<div class="acts"><button class="go" onclick="S.sig=$('#c_sig').value;save();gen()">${i('Créer les textes','Create texts')}</button></div></div>
+<div id="out" hidden><div class="card"><h2 style="margin-top:0">E-mail</h2><label for="sj">${i('Objet','Subject')}</label><input id="sj"><label for="bd">Message</label><textarea id="bd"></textarea>
+<div class="acts"><button class="go" onclick="mail()">${i('Ouvrir dans ma messagerie','Open in my mail app')}</button><button onclick="cp('#bd')">${i('Copier','Copy')}</button></div>
+<p class="muted">${i('Seuls les contacts ayant accepté, de la catégorie et de la langue choisies, sont ajoutés en copie cachée.','Only contacts who opted in, in the chosen category and language, are added in blind copy.')}</p></div>
+<div class="card"><h2 style="margin-top:0">Instagram / WhatsApp</h2><textarea id="ig"></textarea>
+<div class="acts"><button class="go" onclick="sh()">${i('Partager','Share')}</button><button onclick="cp('#ig')">${i('Copier','Copy')}</button></div><p class="muted" style="font-size:.85rem">${i('Instagram n’affiche pas de lien cliquable dans une légende : mettez l’adresse dans la bio ou dans une story (autocollant lien). Pour WhatsApp et SMS, les liens fonctionnent.','Instagram does not make links clickable in a caption: put the address in your bio or a story (link sticker). Links work in WhatsApp and SMS.')}</p></div></div>`}
+function cp(s){const t=$(s);t.select();try{navigator.clipboard.writeText(t.value)}catch(e){document.execCommand('copy')}}
+function sh(){const t=$('#ig').value;if(navigator.share)navigator.share({text:t}).catch(()=>{});else{cp('#ig');alert(i('Texte copié.','Text copied.'))}}
+function mail(){
+  const l=S.c.l;
+  const recips=S.c.to
+    ? S.contacts.filter(x=>x.e.toLowerCase()===S.c.to.toLowerCase())
+    : S.contacts.filter(x=>x.ok&&(l=='both'||x.l==l)&&(!S.c.r||S.c.r=='all'||x.t==S.c.r));
+  const b=recips.map(x=>x.e);
+  if(b.length>40)alert(i('Plus de 40 destinataires : utilisez plutôt un service comme Brevo ou MailerLite (export CSV dans Contacts).','More than 40 recipients: use a service like Brevo or MailerLite instead (export CSV in Contacts).'));
+  const subj=$('#sj').value||i('Nouvelle','News');
+  recips.forEach(x=>khLog(x.e,'','message',subj,'','',recips.length>1));
+  save();
+  location.href='mailto:?'+(b.length?'bcc='+b.join(',')+'&':'')+'subject='+encodeURIComponent($('#sj').value)+'&body='+encodeURIComponent($('#bd').value);
+}
+function msgClear(){S.c.to=null;S.c.toName=null;save();R()}
+function khOpen(j){S.kopen=S.kopen===j?null:j;save();R()}
+function khClose(){S.kopen=null;save();R()}
+function khAdd(j){
+  const c=S.contacts[j];if(!c)return;
+  const t=document.getElementById('kh_t_'+j).value;
+  const d=document.getElementById('kh_d_'+j).value||TD();
+  const a=document.getElementById('kh_a_'+j).value.trim();
+  const w=document.getElementById('kh_w_'+j).value.trim();
+  const x=document.getElementById('kh_x_'+j).value.trim();
+  if(!x&&!a&&!w){alert(i('Ajoutez un détail, un montant ou une œuvre.','Add a detail, an amount or a work.'));return}
+  if(!c.hist)c.hist=[];
+  c.hist.unshift({d,t,x,a,w});
+  c.hist.sort((p,q)=>p.d<q.d?1:-1);
+  save();R();
+}
+function khDel(j,k){const c=S.contacts[j];if(!c||!c.hist)return;c.hist.splice(k,1);save();R()}
+const SCHED={message:7,meeting:3,purchase:14,gift:7,invite:7};
+function khLog(email,name,type,text,amount,workTitle,noSched){
+  const em=(email||'').toLowerCase(),nm=(name||'').toLowerCase();
+  const c=S.contacts.find(x=>x.e.toLowerCase()===em)||S.contacts.find(x=>x.n.toLowerCase()===nm);
+  if(!c)return;
+  if(!c.hist)c.hist=[];
+  c.hist.unshift({d:TD(),t:type,x:text,a:amount||'',w:workTitle||''});
+  c.hist.sort((p,q)=>p.d<q.d?1:-1);
+  if(!noSched && !c.next && SCHED[type]>0){
+    c.next={d:addDays(TD(),SCHED[type]),x:i('Après ','After ')+khlab(type).toLowerCase()};
+  }
+}
+const addDays=(iso,n)=>{const d=new Date(iso+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+const daysAgo=iso=>Math.round((Date.parse(TD()+'T00:00:00Z')-Date.parse(iso+'T00:00:00Z'))/86400000);
+const OVERDUE='#c0392b',TODAY='var(--pink)';
+function remSet(idx,n){
+  const c=S.contacts[idx];if(!c)return;
+  c.next={d:addDays(TD(),n),x:c.next?c.next.x:i('Relance','Follow-up')};
+  save();R();
+}
+function remCancel(idx){const c=S.contacts[idx];if(!c)return;c.next=null;save();R()}
+function remDone(idx){
+  const c=S.contacts[idx];if(!c)return;
+  const was=c.next&&c.next.x?c.next.x:i('Relance','Follow-up');
+  c.next=null;
+  khLog(c.e,c.n,'note',i('Relance faite : ','Follow-up done: ')+was,'','',true);
+  save();R();
+}
+function remPush(idx,n){const c=S.contacts[idx];if(!c)return;c.next={d:addDays(TD(),n),x:c.next?c.next.x:i('Relance','Follow-up')};save();R()}
+function oppAdd(){const d=$('#op_d').value,t=$('#op_t').value.trim(),x=$('#op_x').value.trim();if(!t){$('#op_t').focus();return}if(!d){$('#op_d').focus();return}if(!S.opps)S.opps=[];
+S.opps.push({d,t,x,done:false});save();R()}
+function oppDone(idx){if(S.opps[idx]){S.opps[idx].done=true;save();R()}}
+function oppDel(idx){S.opps.splice(idx,1);save();R()}
+function queue(){
+  const today=TD(),out=[];
+  S.contacts.forEach((c,ci)=>{
+    if(c.next&&c.next.d){
+      const dd=daysAgo(c.next.d);
+      if(dd>=0)out.push({k:'c',ref:ci,d:c.next.d,x:c.next.x||i('Relance','Follow-up'),who:c.n,od:dd>0});
+    }
+  });
+  (S.opps||[]).forEach((o,oi)=>{
+    if(o.done||!o.d)return;
+    const dd=daysAgo(o.d);
+    if(dd>=-7)out.push({k:'o',ref:oi,d:o.d,x:o.t,od:dd>0});
+  });
+  S.contacts.forEach((c,ci)=>{
+    if(!c.ok||c.next)return;
+    if(!['Client','Gallery','Interested'].includes(c.t))return;
+    const h=c.hist||[];
+    const last=h.length?h[0].d:null;
+    if(!last)return;
+    const dd=daysAgo(last);
+    if(dd>=90)out.push({k:'s',ref:ci,d:last,x:i('Silence depuis ','Quiet for ')+dd+i(' jours',' days'),who:c.n,od:false});
+  });
+    S.invoices.forEach((x,fi)=>{
+    if(x.status!=='sent'||!x.due)return;
+    const dd=daysAgo(x.due);
+    if(dd>=0)out.push({k:'f',ref:fi,d:x.due,x:i('Facture ','Invoice ')+x.id+(x.to&&x.to.name?' — '+x.to.name:''),od:true});
+  });
+  return out.sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0);
+}
+function leaveC(){
+  S.c.to=null;S.c.toName=null;
+  const dest=S.cameFrom&&S.cameFrom!='c'?S.cameFrom:'k';
+  S.cameFrom=null;
+  save();
+  T(dest);
+}
+function msgTo(j){
+  const c=S.contacts[j];if(!c)return;
+  S.c.to=c.e;S.c.toName=c.n;S.cameFrom='k';save();T('c');
+}
+function sendPortfolio(j){
+  const c=S.contacts[j];if(!c)return;
+  S.c.type='portfolio';
+  S.c.title=S.sig||'…';
+  S.c.note='';
+  S.c.link=S.purl||'';
+  S.c.to=c.e;S.c.toName=c.n;
+  S.cameFrom='k';
+  save();T('c');
+  setTimeout(function(){try{gen()}catch(e){}},60);
+}
+function openPortfolio(){
+  window.open(S.purl||'','_blank');
+}
+function prepPortfolio(){
+  S.c.type='portfolio';
+  S.c.title=S.sig||'…';
+  S.c.link=S.purl||'';
+  save();R();
+  setTimeout(function(){try{gen()}catch(e){}},60);
+}
+const KH=[
+  ['purchase',['Achat','Purchase'],'var(--mint)'],
+  ['gift',['Cadeau','Gift'],'#e0e8f8'],
+  ['message',['Message','Message'],'#f0ece2'],
+  ['meeting',['Rencontre','Meeting'],'var(--tape)'],
+  ['invite',['Invitation','Invite'],'var(--peach)'],
+  ['note',['Note','Note'],'#efe6ef']
+];
+const khlab=k=>{const t=KH.find(x=>x[0]==k);return t?t[1][fr()?0:1]:k};
+const khbg=k=>{const t=KH.find(x=>x[0]==k);return t?t[2]:'#eee'};
+function K(){
+  const q=S.kq||'';
+  const okn=S.contacts.filter(x=>x.ok).length;
+  const list=S.contacts.map((x,j)=>({x,j})).filter(({x})=>{
+    if(S.kf&&S.kf!='all'&&x.t!=S.kf)return false;
+    return qmatch(q,[x.n,x.e,x.t]);
+  });
+  const counts=[['all',i('Tous','All'),S.contacts.length]].concat(CAT.map(c=>[c[0],c[fr()?1:2],S.contacts.filter(x=>x.t==c[0]).length]));
+  const has=S.contacts.length>0;
+  const row=({x,j})=>{
+  const h=x.hist||[];
+  const purchases=h.filter(e=>e.t=='purchase').length;
+  const open=S.kopen===j;
+  const nx=x.next;
+  const nxc=nx?(nx.d<TD()?OVERDUE:nx.d==TD()?TODAY:'var(--blue)'):'';
+  const head=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="min-width:0"><b>${esc(x.n)}</b> <select aria-label="Type" style="width:auto;padding:2px 6px;font-size:.85rem" onchange="S.contacts[${j}].t=this.value;save();R()">${CAT.map(c=>`<option value="${c[0]}" ${x.t==c[0]?'selected':''}>${c[fr()?1:2]}</option>`).join('')}</select><br><small>${esc(x.e)} · ${x.l.toUpperCase()} · ${x.ok?i('accord','opted in'):i('sans accord','no consent')}${h.length?' · '+h.length+' '+i('événement'+(h.length>1?'s':''),'event'+(h.length>1?'s':'')):''}${purchases?' · '+purchases+' '+i('achat'+(purchases>1?'s':''),'purchase'+(purchases>1?'s':'')):''}${nx?' · <b style="color:'+nxc+'">'+i('relance ','remind ')+nx.d+'</b>':''}</small></div><div class="acts" style="margin:0;flex-wrap:nowrap"><button onclick="khOpen(${j})" aria-expanded="${open}">${open?'▾':'▸'} ${i('Historique','History')}</button><button onclick="dk(${j})" aria-label="${i('Supprimer','Delete')}">✕</button></div></div>`;
+  if(!open)return `<div class="card" style="padding:10px">${head}</div>`;
+  const remBar=`<div style="margin-top:10px;padding:8px 10px;background:var(--wall);border-radius:var(--radius-sm)">
+    <small class="muted" style="display:block;margin-bottom:4px">${nx?i('Relance prévue le ','Follow-up on ')+nx.d+' — '+esc(nx.x):i('Aucune relance programmée.','No follow-up scheduled.')}</small>
+    <div class="acts" style="margin:0">${nx?`<button class="go" onclick="remDone(${j})">${i('Faite','Done')}</button><button onclick="remPush(${j},7)">+7j</button><button onclick="remPush(${j},14)">+14j</button><button onclick="remCancel(${j})">${i('Annuler','Cancel')}</button>`:`<button onclick="remSet(${j},3)">+3j</button><button onclick="remSet(${j},7)">+7j</button><button onclick="remSet(${j},14)">+14j</button><button onclick="remSet(${j},30)">+30j</button>`}<button onclick="sendPortfolio(${j})" style="margin-left:auto">📁 ${i('Portfolio','Portfolio')}</button><button onclick="sendLink(${j},'site')">🌐 ${i('Site','Website')}</button><button onclick="sendLink(${j},'ig')">📷 Instagram</button><button onclick="msgTo(${j})">✎ ${i('Écrire','Write')}</button>
+  </div>`;
+  const evts=h.map((e,k)=>`<div class="row" style="grid-template-columns:5.5rem 1fr auto;align-items:center;gap:8px"><b style="font-size:.8rem">${e.d}</b><div><span class="tag" style="background:${khbg(e.t)}">${khlab(e.t)}</span> ${esc(e.x)}${e.a?' · <b>'+esc(e.a)+'</b>':''}${e.w?' <small class="muted">('+esc(e.w)+')</small>':''}</div><button onclick="khDel(${j},${k})" aria-label="${i('Supprimer','Delete')}" style="min-height:32px;padding:4px 8px">✕</button></div>`).join('');
+  return `<div class="card" style="padding:10px">${head}${remBar}
+<div style="margin-top:12px;padding-top:8px;border-top:1px solid var(--line)">
+<h3 style="margin:4px 0 8px">${i('Historique','History')}</h3>
+${evts||`<p class="muted" style="margin:0 0 8px">${i('Rien encore. Ajoutez un achat, un cadeau, une rencontre…','Nothing yet. Add a purchase, a gift, a meeting…')}</p>`}
+<div class="g2" style="margin-top:10px">
+  <div><label for="kh_t_${j}" style="margin-top:0">${i('Type','Type')}</label><select id="kh_t_${j}">${KH.map(t=>`<option value="${t[0]}">${t[1][fr()?0:1]}</option>`).join('')}</select></div>
+  <div><label for="kh_d_${j}" style="margin-top:0">${i('Date','Date')}</label><input id="kh_d_${j}" type="date" value="${TD()}"></div>
+  <div><label for="kh_a_${j}">${i('Montant (facultatif)','Amount (optional)')}</label><input id="kh_a_${j}" placeholder="${esc(S.artist.cur||'€')}"></div>
+  <div><label for="kh_w_${j}">${i('Œuvre liée (facultatif)','Linked work (optional)')}</label><input id="kh_w_${j}" placeholder="${i('Titre','Title')}"></div>
+</div>
+<label for="kh_x_${j}">${i('Détail','Detail')}</label><input id="kh_x_${j}" placeholder="${i('A acheté la pièce n° 3, a demandé un devis…','Bought piece no. 3, asked for a quote…')}">
+<div class="acts"><button class="go" onclick="khAdd(${j})">${i('Ajouter à l’historique','Add to history')}</button><button onclick="khClose()">${i('Fermer','Close')}</button></div>
+</div></div>`;
+};
+  return `${has?`<div class="card" style="padding:10px"><input id="kq" value="${esc(q)}" placeholder="${i('Rechercher un contact…','Search a contact…')}" oninput="setQ('kq',this.value)" style="margin:0"></div>
+<div class="acts" style="margin:0 0 12px">${counts.map(c=>`<button style="${(S.kf||'all')==c[0]?'background:var(--tape)':''}" onclick="S.kf='${c[0]}';save();R()">${c[1]} (${c[2]})</button>`).join('')}</div>`:''}
+<p><b>${S.contacts.length}</b> ${i('contacts dont','contacts,')} <b>${okn}</b> ${i('avec accord','opted in')}
+ <button onclick="csv()" style="margin-left:8px">${i('Exporter en CSV','Export CSV')}</button></p>
+${list.map(row).join('')||(q?`<p class="muted">${i('Aucun contact ne correspond.','No contacts match.')}</p>`:'')}
+<details class="card" ${has?'':'open'}><summary style="cursor:pointer;font-weight:600">${i('＋ Ajouter un contact','＋ Add a contact')}</summary>
+<div class="g2"><div><label for="kn">${i('Prénom','First name')}</label><input id="kn"></div><div><label for="ke">E-mail</label><input id="ke" type="email" inputmode="email"></div>
+<div><label for="kl">${i('Langue','Language')}</label><select id="kl"><option value="fr">Français</option><option value="en">English</option></select></div>
+<div><label for="kt">Type</label><select id="kt">${CAT.map(c=>`<option value="${c[0]}">${c[fr()?1:2]}</option>`).join('')}</select></div></div>
+<label class="chk"><input id="ko" type="checkbox"> ${i('A accepté de recevoir mes nouvelles','Agreed to receive my news')}</label>
+<div class="acts"><button class="go" onclick="ak()">${i('Ajouter','Add')}</button></div></details>`
+}
+function ak(){const e=$('#ke').value.trim();if(!/^\S+@\S+\.\S+$/.test(e)){alert(i('E-mail invalide.','Invalid e-mail.'));$('#ke').focus();return}
+S.contacts.unshift({n:$('#kn').value.trim()||e,e,l:$('#kl').value,t:$('#kt').value,ok:$('#ko').checked});S.kopen=null;save();R()}
+function dk(j){
+  const c=S.contacts[j];if(!c)return;
+  const n=c.n||c.e;
+  ask(i('Supprimer définitivement la fiche de '+n+' ? Cette action est irréversible.','Permanently delete the contact '+n+'? This cannot be undone.'),i('Supprimer','Delete'),()=>{
+    const k=S.contacts.indexOf(c);if(k<0)return;
+    const item=S.contacts.splice(k,1)[0];S.kopen=null;save();R();
+    toast(i('Contact supprimé','Contact deleted'),()=>{S.contacts.splice(Math.min(k,S.contacts.length),0,item);save();R()});
+  });
+}
+function csv(){
+  const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  const head=['first_name','email','language','type','consent','events','last_event','purchases'];
+  const rows=S.contacts.map(x=>{
+    const h=x.hist||[];
+    return [x.n,x.e,x.l,x.t,x.ok?'yes':'no',h.length,h.length?h[0].d:'',h.filter(e=>e.t=='purchase').length];
+  });
+  const r=[head.map(q).join(',')].concat(rows.map(x=>x.map(q).join(',')));
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['\ufeff'+r.join('\n')],{type:'text/csv'}));
+  a.download='contacts.csv';
+  a.click();
+}
+let Z={};
+function buildZ(){Z={};S.zones.forEach(z=>{Z[z.id]=[[z.name,z.name],z.q||z.name,z.fr?1:0,[]]});if(!Object.keys(Z).length)Z.all=[['Partout','Anywhere'],'',0,[]];if(!Z[S.zone])S.zone=Object.keys(Z)[0];if(!Z[S.mz])S.mz=Object.keys(Z)[0]}
+
+const QM={bq:'independent boutique',cf:'independent coffee shop',tt:'creative studio',rs:'independent restaurant bar',ga:'art gallery'};
+const OT=[
+  ['Résidences','Residencies','creative residency open call','résidence créateurs appel à candidatures'],
+  ['Marchés','Markets','makers market stallholders','marché de créateurs exposants'],
+  ['Appels à projets','Open calls','open call exhibition creators','appel à projets exposition créateurs'],
+  ['Caritatif','Charity','charity auction creators call','vente aux enchères caritative créateurs appel']
+];
+function topics(){return S.topics&&S.topics.length?S.topics.map(x=>[x.l,x.l,x.q,x.q]):OT}
+function O(){const z=Z[S.zone],y=new Date().getFullYear();
+return `<div class="card"><h2 style="margin-top:0">${i('Où chercher ?','Where to look?')}</h2><div class="acts" style="margin-top:0">${Object.keys(Z).map(k=>`<button class="${S.zone==k?'on':''}" style="${S.zone==k?'background:var(--tape)':''}" onclick="S.zone='${k}';save();R()">${Z[k][0][fr()?0:1]}</button>`).join('')}</div></div>
+<div class="card"><h2 style="margin-top:0">${z[0][fr()?0:1]}</h2><p class="muted">${i('Chaque bouton lance une recherche sur les douze derniers mois. Vérifiez toujours la date limite sur le site de l’organisateur.','Each button runs a search over the last twelve months. Always check the deadline on the organiser’s site.')}</p>
+<div class="acts">${topics().map(o=>`<a class="btn go" target="_blank" rel="noopener" href="https://www.google.com/search?tbs=qdr:y&q=${encodeURIComponent(o[z[2]?3:2]+' '+z[1]+' '+y)}">${o[fr()?0:1]}</a>`).join('')}</div></div>
+<div class="card"><h3>${i('Sites de référence','Useful sites')}</h3><p>${z[3].map(s=>`<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join(' · ')}</p></div>
+<div class="card"><h3>${i('Deadlines notées','Saved deadlines')}</h3>
+${(S.opps||[]).map((o,oi)=>({o,oi})).filter(({o})=>!o.done).map(({o,oi})=>{
+  const dd=daysAgo(o.d);
+  const col=dd>0?OVERDUE:dd===0?TODAY:'var(--blue)';
+  return `<div class="row" style="grid-template-columns:6rem 1fr auto;align-items:center;gap:8px"><b style="font-size:.85rem;color:${col}">${o.d}</b><div><b>${esc(o.t)}</b>${o.x?'<br><small class="muted">'+esc(o.x)+'</small>':''}</div><div class="acts" style="margin:0;flex-wrap:nowrap"><button onclick="oppDone(${oi})" style="min-height:32px;padding:4px 8px">${i('Fait','Done')}</button><button onclick="oppDel(${oi})" style="min-height:32px;padding:4px 8px">✕</button></div></div>`;
+}).join('')||`<p class="muted" style="margin:0">${i('Rien en cours.','Nothing pending.')}</p>`}
+<div class="g2" style="margin-top:12px">
+  <div><label for="op_d" style="margin-top:0">${i('Date limite','Deadline')}</label><input id="op_d" type="date" value="${addDays(TD(),14)}"></div>
+  <div><label for="op_t" style="margin-top:0">${i('Titre','Title')}</label><input id="op_t" placeholder="${i('Résidence X, appel galerie…','Residency X, gallery call…')}"></div>
+</div>
+<label for="op_x">${i('Notes (facultatif)','Notes (optional)')}</label><input id="op_x" placeholder="${i('Lien, conditions, lieu…','Link, conditions, place…')}">
+<div class="acts"><button class="go" onclick="oppAdd()">${i('Noter la deadline','Save deadline')}</button></div></div>`}
+const PT={bq:['Boutiques','Boutiques'],cf:['Cafés','Cafés'],tt:['Studios','Studios'],rs:['Restaurants et bars','Restaurants and bars'],ga:['Galeries','Galleries']};
+const PS=[['À contacter','To contact'],['Contacté','Contacted'],['Intéressé','Interested'],['Client','Client']];
+const SEED=[];
+const SEEDLIB={};
+function loadPack(k){
+  const p=SEEDLIB[k];if(!p)return;
+  const have=new Set(S.pr.map(x=>x.n.toLowerCase()));
+  let added=0;
+  p.s.forEach(x=>{if(!have.has(x[0].toLowerCase())){S.pr.push({n:x[0],t:x[1],a:x[2],s:0,nt:x[3]||''});added++;have.add(x[0].toLowerCase())}});
+  save();R();
+  if(added)alert(i(added+' commerce(s) ajouté(s) — '+p.n[0],'Added '+added+' shop(s) — '+p.n[1]));
+  else alert(i('Ces commerces sont déjà tous dans votre liste.','All these shops are already in your list.'));
+}
+if(!S.pr)S.pr=SEED.map(x=>({n:x[0],t:x[1],a:x[2],s:0,nt:x[3]||''}));
+if(S.base==null)S.base='';
+if(!S.opps)S.opps=[];
+if(S.mz==null)S.mz='ldn';
+S.pr.forEach(x=>{if(x.t==='Gallery')x.t='ga'});
+if(S.fx!==2){const FIX={};[...SEED,...Object.values(SEEDLIB).flatMap(k=>k.s)].forEach(x=>{if(x[3])FIX[x[0].toLowerCase()]=x});
+const REN={};
+S.pr=S.pr.filter(p=>p.n!=='Marlowe & Sons');
+S.pr.forEach(p=>{const k=REN[p.n.toLowerCase()]||p.n.toLowerCase(),f=FIX[k];if(f){p.n=f[0];p.t=f[1];p.a=f[2];p.nt=f[3]}});
+S.fx=2;save()}
+const GR=[];
+function sc(){const n=S.mp||(S.ml=='en'?'[Name]':'[Nom]'),g=S.sig||'[Prénom]';
+return S.ml=='en'?{d:`Hello, I'm [your activity]. I'd love to introduce my work. May I show you a few ideas?`,s:`A proposal for ${n}`,e:`Hello,\n\nI'm [your activity].\n[One sentence about what you offer.]\nMay I show you a few ideas for ${n}?\n\n${g}`}
+:{d:`Bonjour, je suis [votre activité]. J'aimerais vous présenter mon travail. Puis-je vous montrer quelques idées ?`,s:`Une proposition pour ${n}`,e:`Bonjour,\n\nJe suis [votre activité].\n[Une phrase sur ce que vous proposez.]\nPuis-je vous montrer quelques idées pour ${n} ?\n\n${g}`}}
+function M(){const x=sc();
+return `<div class="card"><h2 style="margin-top:0">${i('Message d’approche','Outreach message')}</h2>
+<div class="g2"><div><label for="mp">${i('Pour','For')}</label><select id="mp" onchange="S.mp=this.value;save();R()"><option value="">—</option>${S.pr.map(p=>`<option ${S.mp==p.n?'selected':''}>${esc(p.n)}</option>`).join('')}</select></div>
+<div><label for="ml">${i('Langue','Language')}</label><select id="ml" onchange="S.ml=this.value;save();R()"><option value="en" ${S.ml=='en'?'selected':''}>English</option><option value="fr" ${S.ml=='fr'?'selected':''}>Français</option></select></div></div>
+<label for="md">${i('En personne ou message','In person or by message')}</label><textarea id="md" style="min-height:90px">${esc(x.d)}</textarea>
+<div class="acts"><button onclick="cp('#md')">${i('Copier','Copy')}</button></div>
+<label for="ms">${i('E-mail : objet','E-mail: subject')}</label><input id="ms" value="${esc(x.s)}"><label for="me">E-mail</label><textarea id="me">${esc(x.e)}</textarea>
+<div class="acts"><button class="go" onclick="location.href='mailto:?subject='+encodeURIComponent($('#ms').value)+'&body='+encodeURIComponent($('#me').value)">${i('Ouvrir dans ma messagerie','Open in my mail app')}</button><button onclick="cp('#me')">${i('Copier','Copy')}</button></div></div>
+<div class="card"><h3>${i('Trouver d’autres commerces','Find more shops')}</h3><label for="mz">${i('Zone','Area')}</label><select id="mz" onchange="S.mz=this.value;save();R()">${Object.keys(Z).map(k=>`<option value="${k}" ${(S.mz||'ldn')==k?'selected':''}>${Z[k][0][fr()?0:1]}</option>`).join('')}</select><div class="acts">${Object.keys(PT).map(t=>`<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/${encodeURIComponent(QM[t]+' '+Z[S.mz||'ldn'][1])}">${PT[t][fr()?0:1]}</a>`).join('')}</div></div>
+<h2>${i('Commerces à démarcher','Shops to approach')}</h2><p class="muted">${i('Adresses à vérifier avant la visite. Touchez le statut pour le faire avancer.','Check addresses before visiting. Tap the status to move it forward.')}</p>
+${Object.keys(PT).map(t=>{const l=S.pr.map((p,j)=>[p,j]).filter(a=>a[0].t==t);return l.length?`<h3 style="margin:14px 0 8px">${PT[t][fr()?0:1]}</h3>`+l.map(a=>`<div class="card" style="padding:10px;display:flex;justify-content:space-between;align-items:center;gap:8px"><div><b>${esc(a[0].n)}</b><br><small>${esc(a[0].a)}</small></div><div class="acts" style="margin:0;flex-wrap:nowrap"><button onclick="S.pr[${a[1]}].s=(S.pr[${a[1]}].s+1)%4;save();R()" style="${a[0].s?'background:var(--tape)':''}">${PS[a[0].s][fr()?0:1]}</button><button onclick="dp(${a[1]})" aria-label="${i('Supprimer','Delete')}">✕</button></div></div>`).join(''):''}).join('')}
+<div class="card"><h3>${i('Ajouter un commerce','Add a shop')}</h3><div class="g2"><div><label for="an">${i('Nom','Name')}</label><input id="an"></div><div><label for="aa">${i('Adresse','Address')}</label><input id="aa"></div></div>
+<label for="at">Type</label><select id="at">${Object.keys(PT).map(t=>`<option value="${t}">${PT[t][fr()?0:1]}</option>`).join('')}</select>
+<div class="acts"><button class="go" onclick="var v=$('#an').value.trim();if(v){S.pr.push({n:v,t:$('#at').value,a:$('#aa').value,s:0});save();R()}">${i('Ajouter','Add')}</button></div></div>`}
+const TD=()=>{const x=new Date();return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
+const STP=[['Photos et fiche de la pièce','Photos and piece sheet'],['Tourner le reel','Shoot the reel'],['Publier le reel et la légende','Post the reel and caption'],['Contacter 5 acheteurs possibles','Contact 5 possible buyers'],['Relancer après 7 jours','Follow up after 7 days'],['Accord écrit : prix, commission, durée','Written agreement: price, commission, term']];
+const RL=[['0–1 s','Vue d’ensemble de la pièce','Wide shot of the piece','One-of-a-kind.'],['1–3 s','Zoom sur un détail','Zoom on a detail','Handmade.'],['3–5 s','Présentation sous un autre angle','Another angle','Original work.'],['5–7 s','Gros plan sur la texture','Close-up on the texture','Mixed media.'],['7–9 s','Pièce mise en scène','Piece staged in light','One-of-one.'],['9–12 s','Vue finale','Final shot','Available. DM to review.']];
+const CAP="";
+function dp(j){
+  const p=S.pr[j];if(!p)return;
+  ask(i('Supprimer '+p.n+' de votre liste de commerces ?','Remove '+p.n+' from your shop list?'),i('Supprimer','Delete'),()=>{
+    const k=S.pr.indexOf(p);if(k<0)return;const item=S.pr.splice(k,1)[0];save();R();toast(i('Commerce supprimé','Shop removed'),()=>{S.pr.splice(Math.min(k,S.pr.length),0,item);save();R()});
+  });
+}
+function pl(w){return w.pl||(w.pl={mode:'sale',price:'',goal:'',st:STP.map(t=>({t,d:''})),sh:RL.map(()=>0),log:[],sold:null,cap:CAP})}
+function V(){const w=S.works[S.sv];if(w)return VD(S.sv,w);
+const sold=S.works.filter(x=>x.pl&&x.pl.sold).sort((a,b)=>b.pl.sold.d<a.pl.sold.d?-1:1);
+return `<p class="muted">${i('Un plan de vente par pièce : étapes, journal de ce qui a été fait, et trace de la vente.','One sales plan per piece: steps, a log of what was done, and a record of the sale.')}</p>
+${S.works.map((x,n)=>{const p=x.pl;return `<div class="card" style="padding:12px;display:flex;justify-content:space-between;align-items:center;gap:8px"><div><b>${esc(x.t)}</b><br><small>${p&&p.sold?i('Vendue','Sold')+' · '+esc(p.sold.p):p?p.st.filter(s=>s.d).length+'/'+p.st.length+' '+i('étapes','steps'):i('Pas encore de plan','No plan yet')}</small></div><button class="go" onclick="S.sv=${n};save();R()">${p?i('Ouvrir','Open'):i('Planifier','Plan')}</button></div>`}).join('')||`<p class="muted">${i('Ajoutez d’abord une pièce dans l’onglet Œuvres.','First add a piece in the Works tab.')}</p>`}
+<h2>${i('Ventes réalisées','Sales made')}</h2>${sold.map(x=>`<div class="row" style="grid-template-columns:5.5rem 1fr"><b style="font-size:.8rem">${x.pl.sold.d}</b><div><b>${esc(x.t)}</b> · ${esc(x.pl.sold.p)}<br><small>${esc(x.pl.sold.b)}</small></div></div>`).join('')||`<p class="muted">${i('Aucune vente enregistrée.','No sales recorded.')}</p>`}
+<div class="acts"><button onclick="hx()">${i('Exporter l’historique (CSV)','Export history (CSV)')}</button></div>`}
+function VD(n,w){const p=pl(w),k=`S.works[${n}].pl`;
+return `<button onclick="S.sv=null;save();R()">← ${i('Retour','Back')}</button><h2>${esc(w.t)}</h2>
+<div class="card"><div class="g2"><div><label for="vm">${i('Mode de vente','Selling mode')}</label><select id="vm" onchange="${k}.mode=this.value;save()">${[['sale','Vente directe','Direct sale'],['cons','Dépôt-vente','Consignment'],['com','Sur commande','Commission']].map(o=>`<option value="${o[0]}" ${p.mode==o[0]?'selected':''}>${o[fr()?1:2]}</option>`).join('')}</select></div><div><label for="vp">${i('Prix visé','Asking price')}</label><input id="vp" value="${esc(p.price)}" oninput="${k}.price=this.value;save()"></div></div>
+<label for="vg">${i('Acheteurs visés','Target buyers')}</label><input id="vg" value="${esc(p.goal)}" placeholder="${i('boutiques, stylistes, studios…','shops, stylists, studios…')}" oninput="${k}.goal=this.value;save()"></div>
+<div class="card"><h3>${i('Étapes','Steps')}</h3>${p.st.map((q,j)=>`<label class="chk" style="margin:8px 0"><input type="checkbox" ${q.d?'checked':''} onchange="ck(${n},${j},this.checked)"> <span>${esc(q.t[fr()?0:1])} <small class="muted">${q.d}</small></span></label>`).join('')}
+<div class="g2" style="margin-top:8px"><input id="vs" placeholder="${i('Nouvelle étape','New step')}"><button onclick="as(${n})">${i('Ajouter','Add')}</button></div></div>
+<div class="card"><h3>${i('Plan du reel (10–12 s)','Reel plan (10–12 s)')}</h3>${RL.map((r,j)=>`<label class="chk" style="margin:8px 0;align-items:flex-start"><input type="checkbox" ${p.sh[j]?'checked':''} onchange="${k}.sh[${j}]=this.checked?1:0;save()"><span><b>${r[0]}</b> ${r[fr()?1:2]}<br><small class="muted">“${r[3]}”</small></span></label>`).join('')}
+<label for="vc">${i('Légende et hashtags','Caption and hashtags')}</label><textarea id="vc" oninput="${k}.cap=this.value;save()">${esc(p.cap)}</textarea><div class="acts"><button onclick="cp('#vc')">${i('Copier','Copy')}</button></div></div>
+<div class="card"><h3>${i('Journal','Log')}</h3><div class="g2"><input id="vl" placeholder="${i('Ce que j’ai fait : message envoyé, visite…','What I did: message sent, visit…')}"><button onclick="al(${n})">${i('Ajouter','Add')}</button></div>${p.log.map(l=>`<div class="row" style="grid-template-columns:5.5rem 1fr"><b style="font-size:.8rem">${l.d}</b><div>${esc(l.t)}</div></div>`).join('')}</div>
+<div class="card"><h3>${i('Vente','Sale')}</h3>${p.sold?`<p><span class="tag">${i('Vendue','Sold')}</span> ${p.sold.d} · <b>${esc(p.sold.p)}</b> ${esc(p.sold.b)}</p><div class="acts"><button class="go" onclick="mkInvFromSale(${n})">🧾 ${i('Créer une facture','Create an invoice')}</button><button onclick="${k}.sold=null;S.works[${n}].st='a';save();R()">${i('Annuler la vente','Undo sale')}</button></div>`:`<div class="g2"><div><label for="sp">${i('Prix final','Final price')}</label><input id="sp"></div><div><label for="sb">${i('Acheteur ou lieu','Buyer or place')}</label><input id="sb"></div></div><label for="sd">Date</label><input id="sd" type="date" value="${TD()}"><div class="acts"><button class="go" onclick="ds(${n})">${i('Enregistrer la vente','Record the sale')}</button></div>`}</div>`}
+function ck(n,j,c){S.works[n].pl.st[j].d=c?TD():'';save();R()}
+function as(n){const v=$('#vs').value.trim();if(v){S.works[n].pl.st.push({t:[v,v],d:''});save();R()}}
+function al(n){const v=$('#vl').value.trim();if(v){S.works[n].pl.log.unshift({d:TD(),t:v});save();R()}}
+function ds(n){const w=S.works[n],p=w.pl,pr=$('#sp').value.trim();if(!pr){$('#sp').focus();return}
+p.sold={d:$('#sd').value||TD(),p:pr,b:$('#sb').value};w.st='s';
+p.log.unshift({d:p.sold.d,t:i('Vendue : ','Sold: ')+pr+(p.sold.b?' — '+p.sold.b:'')});
+khLog('',p.sold.b,'purchase',i('Achat : ','Purchase: ')+w.t,pr,w.t);
+save();R()}
+function hx(){const q=v=>'"'+String(v).replace(/"/g,'""')+'"',r=[['piece','date','type','detail']];
+S.works.forEach(w=>{if(!w.pl)return;w.pl.log.forEach(l=>r.push([w.t,l.d,'log',l.t]));if(w.pl.sold)r.push([w.t,w.pl.sold.d,'sale',w.pl.sold.p+' '+w.pl.sold.b])});
+const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+r.map(x=>x.map(q).join(',')).join('\n')],{type:'text/csv'}));a.download='historique-ventes.csv';a.click()}
+const GS=[['idea','Idée','Idea'],['wip','En cours','In progress'],['done','Terminée','Finished']];
+function ai(){const v=$('#hi').value.trim();if(!v){$('#hi').focus();return}S.works.unshift({t:v,k:'',s:'',y:'',p:'',st:'a',g:'idea',nt:'',img:''});save();R()}
+function H(){const g=x=>x.g||'done',c=k=>S.works.filter(x=>g(x)==k).length,sold=S.works.filter(x=>x.pl&&x.pl.sold).length,sale=S.works.filter(x=>x.pl&&!x.pl.sold).length,todo=[],lg=[];
+S.works.forEach((x,n)=>{const p=x.pl;if(!p)return;if(!p.sold){const q=p.st.find(z=>!z.d);if(q)todo.push([n,x.t,q.t[fr()?0:1]])}p.log.forEach(l=>lg.push([l.d,x.t,l.t]))});
+lg.sort((a,b)=>a[0]<b[0]?1:-1);
+const st=(lab,v,go)=>`<button onclick="${go}" style="flex-direction:column;flex:1 1 90px;align-items:flex-start"><b style="font-family:'Archivo Black',sans-serif;font-size:1.6rem;font-weight:400">${v}</b><span>${lab}</span></button>`;
+return `<div class="card"><h2 style="margin-top:0">${i('Une idée ?','An idea?')}</h2><div class="g2" style="grid-template-columns:1fr auto"><input id="hi" aria-label="${i('Nouvelle idée','New idea')}" placeholder="${i('Une nouvelle pièce, une série, une collaboration…','A new piece, a series, a collaboration…')}"><button class="go" onclick="ai()">${i('Noter','Save')}</button></div></div>
+${(()=>{const q=queue();if(!q.length)return `<div class="card"><h2 style="margin-top:0">${i('File du jour','Today’s queue')}</h2><p class="muted" style="margin:0">${i('Rien d’urgent aujourd’hui.','Nothing urgent today.')}</p></div>`;
+return `<div class="card"><h2 style="margin-top:0">${i('File du jour','Today’s queue')}</h2>${q.slice(0,10).map(it=>{
+  const od=it.od?' style="color:'+OVERDUE+'"':'';
+    const tag=it.k=='o'?i('Deadline','Deadline'):it.k=='s'?i('Silence','Silent'):it.k=='f'?i('Facture','Invoice'):i('Relance','Follow-up');
+  const who=it.who?it.who+' — ':'';
+  const acts=it.k=='o'
+    ?`<button onclick="oppDone(${it.ref})">${i('Fait','Done')}</button><button onclick="oppDel(${it.ref})" aria-label="${i('Supprimer','Delete')}">✕</button>`
+    :it.k=='f'
+    ?`<button class="go" onclick="invPaid(${it.ref})">${i('Marquer payée','Mark paid')}</button><button onclick="S.fv=${it.ref};T('f')">${i('Ouvrir','Open')}</button>`
+    :`<button class="go" onclick="remDone(${it.ref})">${i('Fait','Done')}</button><button onclick="remPush(${it.ref},7)">+7j</button><button onclick="T('k');khOpen(${it.ref})">${i('Ouvrir','Open')}</button>`;
+  return `<div class="row" style="grid-template-columns:1fr auto;align-items:center;gap:8px"><div><span class="tag">${tag}</span> <b${od}>${esc(who)}${esc(it.x)}</b><br><small class="muted">${it.d}</small></div><div class="acts" style="margin:0;flex-wrap:nowrap">${acts}</div></div>`;
+}).join('')}</div>`;})()}
+<div class="acts" style="margin:0 0 16px">${st(i('Idées','Ideas'),c('idea'),"S.wf='idea';T('w')")}${st(i('En cours','In progress'),c('wip'),"S.wf='wip';T('w')")}${st(i('Terminées','Finished'),c('done'),"S.wf='done';T('w')")}${st(i('En vente','For sale'),sale,"T('v')")}${st(i('Vendues','Sold'),sold,"T('v')")}</div>
+<div class="card"><h2 style="margin-top:0">${i('À faire maintenant','Next up')}</h2>${todo.slice(0,6).map(a=>`<div class="row" style="grid-template-columns:1fr auto;align-items:center"><div><b>${esc(a[1])}</b><br><small>${esc(a[2])}</small></div><button onclick="S.sv=${a[0]};S.tab='v';save();R()">${i('Ouvrir','Open')}</button></div>`).join('')||`<p class="muted" style="margin:0">${i('Rien en attente. Donnez un plan de vente à une pièce dans Ventes.','Nothing pending. Give a piece a sales plan in Sales.')}</p>`}</div>
+<div class="g2"><div class="card"><h3>${i('À qui vendre','Who to sell to')}</h3><p style="margin:6px 0">${S.contacts.length} contacts · ${S.contacts.filter(x=>x.ok).length} ${i('avec accord','opted in')}</p><small class="muted">${CAT.map(k=>[k,S.contacts.filter(x=>x.t==k[0]).length]).filter(a=>a[1]).map(a=>a[0][fr()?1:2]+' '+a[1]).join(' · ')}</small><div class="acts"><button onclick="T('k')">Contacts</button><button onclick="T('c')">${i('Écrire','Write')}</button></div></div>
+<div class="card"><h3>${i('Où vendre','Where to sell')}</h3><p style="margin:6px 0">${S.pr.length} ${i('commerces suivis','shops tracked')}</p><small class="muted">${PS.map((q,j)=>[q,S.pr.filter(x=>x.s==j).length]).filter(a=>a[1]).map(a=>a[0][fr()?0:1]+' '+a[1]).join(' · ')}</small><div class="acts"><button onclick="T('m')">${i('Commerces','Shops')}</button><button onclick="T('o')">${i('Opportunités','Opportunities')}</button></div></div></div>
+<div class="card"><h3>${i('Dernières actions','Recent actions')}</h3>${lg.slice(0,5).map(a=>`<div class="row" style="grid-template-columns:5.5rem 1fr"><b style="font-size:.8rem">${a[0]}</b><div><b>${esc(a[1])}</b> · ${esc(a[2])}</div></div>`).join('')||`<p class="muted" style="margin:0">${i('Le journal de vos pièces apparaîtra ici.','Your pieces’ logs will appear here.')}</p>`}</div>
+<div class="card"><h3>${i('Sauvegarde','Backup')}</h3><p class="muted" style="margin:6px 0">${S.bk?i('Dernière sauvegarde : ','Last backup: ')+S.bk+'. ':i('Pas encore de sauvegarde. ','No backup yet. ')}${i('Pour changer d’appareil : exportez ici, puis importez sur l’autre. L’import remplace les données de l’appareil.','To switch devices: export here, then import on the other one. Importing replaces that device’s data.')}</p><div class="acts"><button class="go" onclick="ex()">${i('Exporter tout','Export all')}</button><button onclick="$('#imp').click()">${i('Importer','Import')}</button><input id="imp" type="file" accept=".json,application/json" hidden onchange="im(this.files[0])"><button onclick="chkUpd(true)">${i('Vérifier les mises à jour','Check for updates')}</button></div><p class="muted" style="margin:8px 0 0;font-size:.85rem">Version ${APP_VERSION}</p></div>`} function ex(){S.bk=TD();save();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({app:'atelier',v:1,d:TD(),S})],{type:'application/json'}));a.download='atelier-sauvegarde-'+TD()+'.json';a.click();R()}
+function im(f){if(!f)return;const r=new FileReader();r.onload=()=>{let d;try{const o=JSON.parse(r.result);d=o&&o.S;if(!d||!Array.isArray(d.works)||!Array.isArray(d.contacts))throw 0}catch(e){alert(i('Fichier non valide.','Invalid file.'));return}
+ask(i('Remplacer toutes les données de cet appareil par celles du fichier ?','Replace all data on this device with the file’s data?'),i('Remplacer','Replace'),()=>{try{localStorage.setItem('atelier_v2',JSON.stringify(d));location.reload()}catch(e){alert(i('Import impossible : stockage plein.','Import failed: storage full.'))}})};r.readAsText(f)}
+
+
+/* ===================== FACTURES ===================== */
+const INVST={draft:['Brouillon','Draft','#f0ece2'],sent:['Envoyée','Sent','var(--tape)'],paid:['Payée','Paid','var(--mint)']};
+const invTotal=x=>(x.items||[]).reduce((a,it)=>a+(Number(it.qty)||0)*(Number(it.price)||0),0);
+const invSt=x=>INVST[x.status]||INVST.draft;
+function invNum(){
+  const y=new Date().getFullYear();
+  if(S.invYear!=y){S.invYear=y;S.invSeq=1}
+  const n=S.invSeq++;
+  return (S.invPfx||'F')+y+'-'+String(n).padStart(3,'0');
+}
+function F(){
+  if(S.fset)return FS();
+  if(S.fv!=null&&S.invoices[S.fv])return FV(S.fv);
+  const q=S.fq||'';
+  const list=S.invoices.map((x,n)=>({x,n})).filter(({x})=>qmatch(q,[x.id,x.to&&x.to.name,x.to&&x.to.email,x.work]));
+  const tot=st=>S.invoices.filter(x=>x.status==st).reduce((a,x)=>a+invTotal(x),0);
+  const cur=S.artist.cur||'€';
+  return `<div class="acts" style="margin:0 0 12px">
+    <button class="go" onclick="nvF()">＋ ${i('Nouvelle facture','New invoice')}</button>
+    <button onclick="S.fset=true;save();R()">${i('Mes coordonnées','My details')}</button>
+    ${S.invoices.length?`<button onclick="exInv()">${i('Exporter CSV','Export CSV')}</button>`:''}
+  </div>
+  ${S.invoices.length?`<div class="card" style="padding:10px"><input id="fq" value="${esc(q)}" placeholder="${i('Rechercher…','Search…')}" oninput="setQ('fq',this.value)" style="margin:0"></div>`:''}
+  ${list.map(({x,n})=>{const st=invSt(x);return `<div class="card" style="padding:12px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+    <div style="min-width:0"><b>${esc(x.id)}</b> <span class="tag" style="background:${st[2]}">${st[fr()?0:1]}</span><br>
+          <small class="muted">${esc(x.d)} · ${esc((x.to&&x.to.name)||'—')} · <b>${cur}${invTotal(x).toLocaleString('fr-FR')}</b>${x.dep?' · '+i('acompte','deposit')+' '+x.dep+'%':''}${x.work?' · '+esc(x.work):''}</small></div>
+    <div class="acts" style="margin:0;flex-wrap:nowrap">
+      <button onclick="S.fv=${n};save();R()">${i('Ouvrir','Open')}</button>
+      <button onclick="prF(${n})" title="${i('Imprimer / PDF','Print / PDF')}">🖨</button>
+      <button onclick="delF(${n})" aria-label="${i('Supprimer','Delete')}">✕</button>
+    </div></div>`}).join('')||`<p class="muted">${i('Aucune facture pour le moment.','No invoices yet.')}</p>`}
+  ${S.invoices.length?`<div class="card"><h3 style="margin-top:0">${i('Totaux','Totals')}</h3>
+    ${['draft','sent','paid'].map(st=>{const m=INVST[st];return `<div class="row"><b>${m[fr()?0:1]}</b><div>${cur}${tot(st).toLocaleString('fr-FR')}</div></div>`}).join('')}
+  </div>`:''}`;
+}
+function FS(){
+  const a=S.artist,k='S.artist';
+  return `<button onclick="S.fset=false;save();R()">← ${i('Retour','Back')}</button>
+  <div class="card"><h2 style="margin-top:0">${i('Mes coordonnées','My details')}</h2>
+    <p class="muted">${i('Ces informations apparaissent en haut de chaque facture.','This information appears at the top of every invoice.')}</p>
+    <label for="a_n">${i('Nom ou marque','Name or brand')}</label><input id="a_n" value="${esc(a.name)}" oninput="${k}.name=this.value;save()">
+    <label for="a_a">${i('Adresse','Address')}</label><textarea id="a_a" style="min-height:80px" oninput="${k}.addr=this.value;save()">${esc(a.addr)}</textarea>
+    <div class="g2">
+      <div><label for="a_e">E-mail</label><input id="a_e" type="email" value="${esc(a.email)}" oninput="${k}.email=this.value;save()"></div>
+      <div><label for="a_p">${i('Téléphone','Phone')}</label><input id="a_p" value="${esc(a.phone)}" oninput="${k}.phone=this.value;save()"></div>
+    </div>
+    <label for="a_t">${i('N° TVA / fiscal (facultatif)','VAT / tax number (optional)')}</label><input id="a_t" value="${esc(a.tax)}" oninput="${k}.tax=this.value;save()">
+    <div class="g2">
+      <div><label for="a_c">${i('Devise','Currency')}</label><input id="a_c" value="${esc(a.cur)}" oninput="${k}.cur=this.value;save()"></div>
+      <div><label for="a_px">${i('Préfixe factures','Invoice prefix')}</label><input id="a_px" value="${esc(S.invPfx)}" oninput="S.invPfx=this.value;save()"></div>
+    </div>
+    <label for="a_tm">${i('Conditions de paiement','Payment terms')}</label><input id="a_tm" value="${esc(a.terms||'')}" placeholder="${i('Paiement à 14 jours','Payment within 14 days')}" oninput="${k}.terms=this.value;save()">
+  </div>`;
+}
+function nvF(){
+  S.invoices.unshift({
+    id:invNum(),d:TD(),due:addDays(TD(),14),
+    to:{name:'',email:'',addr:''},
+    items:[{desc:'',qty:1,price:''}],
+        notes:'',status:'draft',cur:S.artist.cur||'€',dep:0
+  });
+  S.fv=0;save();R();
+}
+function delF(n){
+  const x=S.invoices[n];if(!x)return;
+  ask(i('Supprimer la facture '+x.id+' ?','Delete invoice '+x.id+'?'),i('Supprimer','Delete'),()=>{
+    const k=S.invoices.indexOf(x);if(k<0)return;const item=S.invoices.splice(k,1)[0];S.fv=null;save();R();toast(i('Facture supprimée','Invoice deleted'),()=>{S.invoices.splice(Math.min(k,S.invoices.length),0,item);save();R()});
+  });
+}function invPaid(n){const x=S.invoices[n];if(!x)return;x.status='paid';save();R()}
+function FV(n){
+  const x=S.invoices[n];if(!x)return '';
+  const k=`S.invoices[${n}]`;
+  const cur=x.cur||S.artist.cur||'€';
+  const tot=invTotal(x);
+  const items=(x.items||[]).map((it,j)=>`<div style="padding:10px 0;border-top:1px solid var(--line)">
+    <input value="${esc(it.desc)}" placeholder="${i('Description','Description')}" oninput="${k}.items[${j}].desc=this.value;save()" style="margin-bottom:6px">
+    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:6px">
+      <input type="number" min="1" step="1" value="${it.qty||1}" placeholder="${i('Qté','Qty')}" oninput="${k}.items[${j}].qty=this.value;save();updTot(${n})">
+      <input type="number" min="0" step="0.01" value="${it.price||''}" placeholder="0" oninput="${k}.items[${j}].price=this.value;save();updTot(${n})">
+      <button onclick="delItem(${n},${j})" aria-label="${i('Retirer','Remove')}" style="min-height:42px;padding:4px 12px">✕</button>
+    </div>
+  </div>`).join('');
+  return `<button onclick="S.fv=null;save();R()">← ${i('Retour','Back')}</button>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+      <h2 style="margin:0">${esc(x.id)}</h2>
+      <button class="go" onclick="prF(${n})">🖨 ${i('Imprimer / PDF','Print / PDF')}</button>
+    </div>
+    <div class="g2">
+      <div><label>${i('Numéro','Number')}</label><input value="${esc(x.id)}" oninput="${k}.id=this.value;save()"></div>
+      <div><label>${i('Statut','Status')}</label><select onchange="${k}.status=this.value;save();R()">
+        ${Object.keys(INVST).map(s=>`<option value="${s}" ${x.status==s?'selected':''}>${INVST[s][fr()?0:1]}</option>`).join('')}
+      </select></div>
+      <div><label>${i('Date','Date')}</label><input type="date" value="${x.d}" onchange="${k}.d=this.value;save()"></div>
+      <div><label>${i('Échéance','Due')}</label><input type="date" value="${x.due||''}" onchange="${k}.due=this.value;save()"></div>
+      <div><label>${i('Devise','Currency')}</label><input value="${esc(cur)}" oninput="${k}.cur=this.value;save()"></div>
+      <div><label>${i('Œuvre liée','Linked work')}</label><select onchange="${k}.work=this.value;save()">
+        <option value="">—</option>
+        ${S.works.map(w=>`<option ${x.work==w.t?'selected':''}>${esc(w.t)}</option>`).join('')}
+      </select></div>
+    </div>
+  </div>
+  <div class="card"><h3 style="margin-top:0">${i('Client','Client')}</h3>
+    <label>${i('Nom','Name')}</label><input value="${esc(x.to.name||'')}" oninput="${k}.to.name=this.value;save()">
+    <div class="g2">
+      <div><label>E-mail</label><input type="email" value="${esc(x.to.email||'')}" oninput="${k}.to.email=this.value;save()"></div>
+      <div><label>${i('Depuis mes contacts','From contacts')}</label><select onchange="pickContact(${n},this.value)">
+        <option value="">—</option>
+        ${S.contacts.map((c,j)=>`<option value="${j}">${esc(c.n||c.e)}</option>`).join('')}
+      </select></div>
+    </div>
+    <label>${i('Adresse','Address')}</label><textarea style="min-height:60px" oninput="${k}.to.addr=this.value;save()">${esc(x.to.addr||'')}</textarea>
+  </div>
+  <div class="card"><h3 style="margin-top:0">${i('Lignes','Lines')}</h3>
+    ${items}
+    <div class="acts"><button onclick="addItem(${n})">＋ ${i('Ajouter une ligne','Add a line')}</button></div>
+     <div id="inv_tot" style="text-align:right;margin-top:12px;font-family:var(--font-display);font-size:1.3rem">${cur}${tot.toLocaleString('fr-FR')}</div>
+  </div>
+  <div class="card"><h3 style="margin-top:0">${i('Acompte','Deposit')}</h3>
+    <label class="chk"><input type="checkbox" ${x.dep?'checked':''} onchange="S.invoices[${n}].dep=this.checked?50:0;save();R()"> ${i('Demander un acompte à la commande','Request a deposit on order')}</label>
+    ${x.dep?`<label for="dep_p">${i('Pourcentage','Percentage')}</label>
+    <input id="dep_p" type="number" min="1" max="99" value="${x.dep}" oninput="S.invoices[${n}].dep=Math.max(1,Math.min(99,+this.value||50));save();updTot(${n})">
+    <div id="dep_sum" style="text-align:right;margin-top:10px;line-height:1.5">
+      <div>${i('Total','Total')} : ${cur}${tot.toLocaleString('fr-FR')}</div>
+      <div><b>${i('Acompte','Deposit')} (${x.dep}%) : ${cur}${(tot*x.dep/100).toLocaleString('fr-FR')}</b></div>
+      <div class="muted">${i('Solde à la livraison','Balance on delivery')} : ${cur}${(tot*(100-x.dep)/100).toLocaleString('fr-FR')}</div>
+    </div>`:''}
+  </div>
+  <div class="card"><h3 style="margin-top:0">${i('Notes','Notes')}</h3>
+    <textarea oninput="${k}.notes=this.value;save()" placeholder="${i('Remerciements, mentions…','Thanks, notes…')}">${esc(x.notes||'')}</textarea>
+  </div>`;
+}
+function addItem(n){S.invoices[n].items.push({desc:'',qty:1,price:''});save();R()}
+function delItem(n,j){S.invoices[n].items.splice(j,1);if(!S.invoices[n].items.length)S.invoices[n].items.push({desc:'',qty:1,price:''});save();R()}
+function pickContact(n,j){
+  if(j==='')return;
+  const c=S.contacts[+j];if(!c)return;
+  S.invoices[n].to.name=c.n||'';
+  S.invoices[n].to.email=c.e||'';
+  save();R();
+}
+function prF(n){
+  const x=S.invoices[n];if(!x)return;
+  const a=S.artist,cur=x.cur||a.cur||'€';
+  const tot=invTotal(x);
+  const rows=(x.items||[]).map(it=>`<tr><td>${esc(it.desc)}</td><td style="text-align:right">${it.qty||1}</td><td style="text-align:right">${cur}${Number(it.price||0).toLocaleString('fr-FR')}</td><td style="text-align:right">${cur}${((Number(it.qty)||1)*(Number(it.price)||0)).toLocaleString('fr-FR')}</td></tr>`).join('');
+  const html=`<!DOCTYPE html><html lang="${S.lang}"><head><meta charset="utf-8"><title>${esc(x.id)}</title><style>
+    *{box-sizing:border-box}
+    body{font:14px/1.55 -apple-system,system-ui,"Work Sans",sans-serif;color:#2a2520;padding:48px;max-width:820px;margin:auto;background:#fff}
+    h1{font-size:2rem;margin:0 0 4px;letter-spacing:-.02em}
+    .head{display:flex;justify-content:space-between;gap:24px;margin-bottom:36px;align-items:flex-start}
+    .head>div{flex:1}
+    .seller{text-align:right;color:#6b625a;font-size:.9rem}
+    .buyer{margin-bottom:24px;padding:16px;background:#faf6ee;border-radius:12px}
+    .buyer b,.seller b{color:#2a2520}
+    table{width:100%;border-collapse:collapse;margin:20px 0}
+    th,td{padding:10px 8px;border-bottom:1px solid #e8dfd0;text-align:left;vertical-align:top}
+    th{background:#faf6ee;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em}
+    .tot{font-size:1.5rem;font-weight:700;text-align:right;padding-top:12px;border-top:2px solid #2a2520;margin-top:8px}
+    .meta{display:flex;gap:24px;font-size:.9rem;color:#6b625a;flex-wrap:wrap}
+    .stamp{position:absolute;top:60px;right:48px;font-weight:800;color:#c8312d;border:3px solid #c8312d;padding:6px 18px;transform:rotate(-8deg);font-size:1rem;letter-spacing:.1em}
+    .notes{margin-top:32px;padding-top:16px;border-top:1px solid #e8dfd0;color:#6b625a;white-space:pre-line}
+    .foot{margin-top:48px;font-size:.85rem;color:#6b625a;text-align:center}
+    @media print{body{padding:24px}.stamp{position:fixed;top:40px;right:40px}}
+  </style></head><body>
+    ${x.status=='paid'?`<div class="stamp">${i('PAYÉE','PAID')}</div>`:''}
+    <div class="head">
+      <div>
+        <h1>${i('Facture','Invoice')}</h1>
+        <div style="font-family:ui-monospace,monospace;font-size:1.1rem">${esc(x.id)}</div>
+        <div class="meta" style="margin-top:8px"><span>${i('Date','Date')} : ${esc(x.d)}</span>${x.due?`<span>${i('Échéance','Due')} : ${esc(x.due)}</span>`:''}</div>
+      </div>
+      <div class="seller">
+        <b>${esc(a.name||'')}</b><br>
+        ${(a.addr||'').split('\n').filter(Boolean).map(esc).join('<br>')}
+        ${a.email?'<br>'+esc(a.email):''}
+        ${a.phone?'<br>'+esc(a.phone):''}
+        ${a.tax?'<br>'+esc(a.tax):''}
+      </div>
+    </div>
+    <div class="buyer"><b>${i('Client','Client')}</b><br>
+      ${esc(x.to.name||'')}
+      ${(x.to.addr||'').split('\n').filter(Boolean).map(l=>'<br>'+esc(l)).join('')}
+      ${x.to.email?'<br>'+esc(x.to.email):''}
+    </div>
+    <table><thead><tr>
+      <th>${i('Description','Description')}</th>
+      <th style="text-align:right">${i('Qté','Qty')}</th>
+      <th style="text-align:right">${i('Prix','Price')}</th>
+      <th style="text-align:right">${i('Total','Total')}</th>
+    </tr></thead><tbody>${rows}</tbody></table>
+    <div class="tot">${i('Total','Total')} : ${cur}${tot.toLocaleString('fr-FR')}</div>
+        ${x.dep?`<div style="text-align:right;margin-top:10px;font-size:1.05rem">
+      <b>${i('Acompte à la commande','Deposit on order')} (${x.dep}%) : ${cur}${(tot*x.dep/100).toLocaleString('fr-FR')}</b>
+    </div>
+    <div style="text-align:right;font-size:.92rem;color:#6b625a">
+      ${i('Solde à la livraison','Balance on delivery')} : ${cur}${(tot*(100-x.dep)/100).toLocaleString('fr-FR')}
+    </div>`:''}
+    ${(a.terms||x.notes)?`<div class="notes">${a.terms?esc(a.terms):''}${a.terms&&x.notes?'\n\n':''}${x.notes?esc(x.notes):''}</div>`:''}
+    <div class="foot">${i('Merci pour votre confiance.','Thank you for your trust.')} — ${esc(a.name||'')}</div>
+  </body></html>`;
+  const w=window.open('','_blank');
+  if(!w){alert(i('Autorisez les fenêtres pop-up pour imprimer.','Allow pop-ups to print.'));return}
+  w.document.write(html);w.document.close();
+  setTimeout(()=>{try{w.focus();w.print()}catch(e){}},350);
+}
+function mkInvFromSale(n){
+  const w=S.works[n];if(!w||!w.pl||!w.pl.sold)return;
+  const s=w.pl.sold;
+  const price=parseFloat(String(s.p).replace(/[^\d.,]/g,'').replace(',','.'))||0;
+  S.invoices.unshift({
+    id:invNum(),d:s.d||TD(),due:addDays(s.d||TD(),14),
+    to:{name:s.b||'',email:'',addr:''},
+    items:[{desc:w.t+(w.k?' — '+w.k:''),qty:1,price:price}],
+    notes:w.nt||'',status:'paid',cur:S.artist.cur||'€',work:w.t,dep:0
+  });
+  S.fv=0;S.fset=false;save();
+  T('f');
+}
+function exInv(){
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const head=['number','date','due','status','client','email','work','total','currency','items','notes'];
+  const rows=S.invoices.map(x=>[x.id,x.d,x.due,x.status,(x.to&&x.to.name)||'',(x.to&&x.to.email)||'',x.work||'',invTotal(x),x.cur||S.artist.cur||'€',(x.items||[]).map(it=>it.qty+'×'+it.desc+' @ '+it.price).join(' | '),x.notes||'']);
+  const csv=[head.map(q).join(',')].concat(rows.map(r=>r.map(q).join(','))).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));
+  a.download='factures-'+TD()+'.csv';
+  a.click();
+}
+function updTot(n){
+  const x=S.invoices[n];if(!x)return;
+  const cur=x.cur||S.artist.cur||'€';
+  const tot=invTotal(x);
+  const t=document.getElementById('inv_tot');
+  if(t)t.textContent=cur+tot.toLocaleString('fr-FR');
+  const d=document.getElementById('dep_sum');
+  if(d&&x.dep){
+    d.innerHTML=`<div>${i('Total','Total')} : ${cur}${tot.toLocaleString('fr-FR')}</div>
+      <div><b>${i('Acompte','Deposit')} (${x.dep}%) : ${cur}${(tot*x.dep/100).toLocaleString('fr-FR')}</b></div>
+      <div class="muted">${i('Solde à la livraison','Balance on delivery')} : ${cur}${(tot*(100-x.dep)/100).toLocaleString('fr-FR')}</div>`;
+  }
+}
+/* =================== FIN FACTURES =================== */
+
+/* =================== MISES À JOUR =================== */
+let lastChk=0;
+async function chkUpd(manual){
+  lastChk=Date.now();
+  try{
+    const r=await fetch(location.pathname+'?_='+Date.now(),{cache:'no-store'});
+    if(!r.ok)throw new Error('http');
+    const t=await r.text(),m=t.match(/APP_VERSION\s*=\s*'([^']+)'/);
+    if(!m)throw new Error('version');
+    if(m[1]!==APP_VERSION){
+      showUpd(m[1]);
+      if(manual)ask(i('Une nouvelle version est disponible. Mettre à jour maintenant ? Vos données restent sur cet appareil.','A new version is available. Update now? Your data stays on this device.'),i('Mettre à jour','Update'),applyUpd);
+    }else if(manual)alert(i('Vous avez déjà la dernière version.','You already have the latest version.'));
+  }catch(e){if(manual)alert(i('Impossible de vérifier : pas de connexion, ou fichier ouvert hors ligne.','Cannot check: no connection, or file opened offline.'))}
+}
+function showUpd(){const b=$('#upd');b.innerHTML=`<b>${i('Nouvelle version disponible','New version available')}</b><span style="flex:1"></span><button class="go" onclick="applyUpd()">${i('Mettre à jour','Update')}</button><button onclick="$('#upd').hidden=true">${i('Plus tard','Later')}</button>`;b.hidden=false}
+async function applyUpd(){
+  try{
+    if('serviceWorker' in navigator){for(const r of await navigator.serviceWorker.getRegistrations())await r.unregister()}
+    if(window.caches){for(const k of await caches.keys())await caches.delete(k)}
+  }catch(e){}
+  save();location.replace(location.pathname+'?v='+Date.now());
+}
+if(/[?&]v=\d+/.test(location.search)){try{history.replaceState(null,'',location.pathname)}catch(e){}}
+if(location.protocol!=='file:')setTimeout(chkUpd,3000);
+if(location.protocol!=='file:')document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-lastChk>600000)chkUpd()});
+if(location.protocol!=='file:')addEventListener('online',()=>chkUpd());
+
+/* =================== MES ADRESSES EN LIGNE =================== */
+
+const CURS=['€','£','$','CHF','CA$','A$','¥','Dh','R$'];
+function sset(k,v){S[k]=v.trim();save();R()}
+function curSet(v){S.artist.cur=v;save();R()}
+function zAdd(){const n=$('#zn').value.trim();if(!n){$('#zn').focus();return}S.zones.push({id:'z'+Date.now(),name:n,q:$('#zq').value.trim()||n,type:$('#zt').value,fr:$('#zf').checked?1:0});save();R()}
+function tAdd(){const l=$('#tl').value.trim(),q=$('#tq').value.trim();if(!l){$('#tl').focus();return}S.topics.push({l:l,q:q||l});save();R()}
+function tDel(k){S.topics.splice(k,1);save();R()}
+function zDel(k){S.zones.splice(k,1);save();R()}
+function ACC(){const ok=!!S.sig;
+const ft=[['w','Créations','Chaque pièce, de l’idée à la vente.','Creations','Each piece, from idea to sale.'],['v','Ventes','Un plan et un journal pour chaque pièce.','Sales','A plan and a log for each piece.'],['f','Factures','Créez et imprimez vos factures.','Invoices','Create and print your invoices.'],['k','Contacts','Catégories, historique et relances.','Contacts','Categories, history and follow-ups.'],['c','Communiquer','Messages à modifier, par e-mail ou réseaux.','Reach out','Messages you can edit, by e-mail or social.'],['o','Opportunités','Recherches web par quartier et par pays.','Opportunities','Web searches by district and country.']];
+return `<section style="padding:20px 0 4px"><h2 class="big">${ok?i('Bienvenue, ','Welcome, ')+esc(S.sig):i('Votre atelier, au même endroit','Your studio, in one place')}</h2>
+<p style="max-width:34em;font-size:1.1rem" class="muted">${i('Ce que vous créez, ce que vous préparez, à qui et où le vendre : tout est rangé ici, sur votre appareil.','What you make, what you plan, who to sell to and where: everything is kept here, on your device.')}</p>
+<div class="acts"><button class="go" onclick="T('${ok?'h':'r'}')">${ok?i('Ouvrir mon atelier','Open my studio'):i('Personnaliser mon atelier','Set up my studio')}</button>${ok?`<button onclick="T('r')">${i('Réglages','Settings')}</button>`:''}</div></section>
+<div class="feat">${ft.map(f=>`<button onclick="T('${f[0]}')"><b>${i(f[1],f[3])}</b>${i(f[2],f[4])}</button>`).join('')}</div>
+<p class="muted">${i('Vos données restent sur cet appareil. Exportez-les depuis l’onglet Atelier pour les sauvegarder.','Your data stays on this device. Export it from the Studio tab to back it up.')}</p>`}
+function SET(){const f=(k,lab,ph)=>`<label for="s_${k}">${lab}</label><input id="s_${k}" value="${esc(S.lk[k])}" placeholder="${ph||''}" onchange="lkSet('${k}',this.value)">`,cu=S.artist.cur||'€';
+return `<div class="card"><h2 style="margin-top:0">${i('Mon profil','My profile')}</h2>
+<label for="s_sig">${i('Prénom ou nom affiché','First name or display name')}</label><input id="s_sig" value="${esc(S.sig)}" onchange="sset('sig',this.value)">
+<label for="s_cover">${i('Image d’en-tête (adresse, facultatif)','Header image (address, optional)')}</label><input id="s_cover" value="${esc(S.cover)}" placeholder="https://" onchange="sset('cover',this.value)">
+<label for="s_cur">${i('Monnaie','Currency')}</label><select id="s_cur" onchange="curSet(this.value)">${[...new Set([...CURS,cu])].map(c=>`<option ${cu==c?'selected':''}>${esc(c)}</option>`).join('')}</select>
+<label for="s_tags">${i('Hashtags pour vos publications (facultatif)','Hashtags for your posts (optional)')}</label><input id="s_tags" value="${esc(S.tags)}" placeholder="#monatelier #fait-main" onchange="sset('tags',this.value)"></div>
+<div class="card"><h2 style="margin-top:0">${i('Adresses et réseaux','Links and social networks')}</h2>${f('site',i('Site','Website'),'https://')}${f('ig','Instagram','@pseudo')}${f('pf','Portfolio','https://')}${f('fb','Facebook','https://')}${f('tk','TikTok','@pseudo')}${f('li','LinkedIn','https://')}</div>
+<div class="card"><h2 style="margin-top:0">${i('Lieux de recherche','Search places')}</h2><p class="muted">${i('Quartiers, villes ou pays : ils servent aux onglets Opportunités et Commerces.','Districts, cities or countries: used by the Opportunities and Shops tabs.')}</p>
+${S.zones.map((z,k)=>`<div class="row" style="grid-template-columns:1fr auto;align-items:center"><div><b>${esc(z.name)}</b> <span class="tag">${esc(z.type)}</span><br><small class="muted">${esc(z.q)}</small></div><button onclick="zDel(${k})">${i('Retirer','Remove')}</button></div>`).join('')||`<p class="muted">${i('Aucun lieu pour le moment.','No place yet.')}</p>`}
+<div class="g2"><div><label for="zn">${i('Nom du lieu','Place name')}</label><input id="zn"></div><div><label for="zq">${i('Texte de recherche (quartier, ville, pays)','Search text (district, city, country)')}</label><input id="zq"></div></div>
+<div class="g2"><div><label for="zt">Type</label><select id="zt"><option value="Quartier">${i('Quartier','District')}</option><option value="Ville">${i('Ville','City')}</option><option value="Pays">${i('Pays','Country')}</option></select></div><label class="chk" style="margin-top:28px"><input type="checkbox" id="zf"> ${i('Rechercher en français','Search in French')}</label></div>
+<div class="acts"><button class="go" onclick="zAdd()">${i('Ajouter ce lieu','Add this place')}</button></div></div>
+<div class="card"><h2 style="margin-top:0">${i('Sujets de recherche','Search topics')}</h2><p class="muted">${i('Chaque sujet devient un bouton dans Opportunités. Sans sujet, des sujets par défaut sont proposés.','Each topic becomes a button in Opportunities. With none, default topics are used.')}</p>
+${S.topics.map((x,k)=>`<div class="row" style="grid-template-columns:1fr auto;align-items:center"><div><b>${esc(x.l)}</b><br><small class="muted">${esc(x.q)}</small></div><button onclick="tDel(${k})">${i('Retirer','Remove')}</button></div>`).join('')}
+<div class="g2"><div><label for="tl">${i('Nom du bouton','Button name')}</label><input id="tl" placeholder="${i('Salons','Fairs')}"></div><div><label for="tq">${i('Mots recherchés','Search words')}</label><input id="tq" placeholder="${i('salon créateurs exposants','makers fair exhibitors')}"></div></div>
+<div class="acts"><button class="go" onclick="tAdd()">${i('Ajouter ce sujet','Add this topic')}</button></div></div>
+<div class="card"><h2 style="margin-top:0">${i('Données de cet appareil','Data on this device')}</h2><p class="muted">${i('Tout est enregistré uniquement dans ce navigateur. Effacer remet l’appli à zéro.','Everything is stored only in this browser. Erasing resets the app to blank.')}</p><div class="acts"><button onclick="ask(i('Effacer toutes les données de cet appareil ?','Erase all data on this device?'),i('Effacer','Erase'),()=>{try{localStorage.removeItem('atelier_v2')}catch(e){}location.reload()})">${i('Tout effacer','Erase everything')}</button></div></div>`}
+const LKS=[['site',['Mon site','My website'],'🌐'],['ig',['Instagram','Instagram'],'📷'],['pf',['Portfolio','Portfolio'],'📁'],['fb',['Facebook','Facebook'],'👍'],['tk',['TikTok','TikTok'],'🎵'],['li',['LinkedIn','LinkedIn'],'💼']];
+function lkMsg(k){
+  const ls=S.c.l==='both'?['fr','en']:[S.c.l||'fr'],u=S.lk[k];
+  const w={site:['mon site','my website'],ig:['mon compte Instagram','my Instagram account'],pf:['mon portfolio','my portfolio'],fb:['ma page Facebook','my Facebook page'],tk:['mon compte TikTok','my TikTok account'],li:['mon profil LinkedIn','my LinkedIn profile']}[k];
+  const nm=LKS.find(a=>a[0]===k)[1];
+  const one=l=>{const j=l==='fr'?0:1;return{s:(S.sig?S.sig+' — ':'')+nm[j],b:[['Bonjour,','Hello,'][j],[`Voici ${w[0]} : ${u}`,`Here is ${w[1]}: ${u}`][j],[`Chaleureusement,\n${S.sig||'[Prénom]'}`,`Warm regards,\n${S.sig||'[Prénom]'}`][j]].join('\n\n')}};
+  const p=ls.map(one);return{s:p.map(x=>x.s).join(' / '),b:p.map(x=>x.b).join('\n\n———\n\n')};
+}
+function lkSet(k,v){v=v.trim();if(k==='ig'&&v&&!/[\/.]/.test(v))v='https://instagram.com/'+v.replace(/^@/,'');if(k==='tk'&&v&&!/[\/.]/.test(v))v='https://tiktok.com/@'+v.replace(/^@/,'');if(v&&!/^https?:\/\//i.test(v))v='https://'+v;S.lk[k]=v;if(k==='pf')S.purl=v;save();R()}
+function lkOpen(k){if(S.lk[k])window.open(S.lk[k],'_blank','noopener')}
+function lkMail(k){const m=lkMsg(k);location.href='mailto:?subject='+encodeURIComponent(m.s)+'&body='+encodeURIComponent(m.b)}
+function lkWa(k){window.open('https://wa.me/?text='+encodeURIComponent(lkMsg(k).b),'_blank','noopener')}
+function lkShare(k){const m=lkMsg(k);if(navigator.share)navigator.share({title:m.s,text:m.b}).catch(()=>{});else{try{navigator.clipboard.writeText(S.lk[k])}catch(e){}alert(i('Adresse copiée.','Link copied.'))}}
+function LKC(){return `<div class="card" style="padding:12px;background:var(--peach)"><h3 style="margin:0 0 6px">${i('Mes adresses en ligne','My online links')}</h3>${LKS.map(a=>`<div style="padding:8px 0;border-top:1px solid #0002"><label for="lk_${a[0]}" style="margin:0 0 3px">${a[2]} ${a[1][fr()?0:1]}</label><input id="lk_${a[0]}" value="${esc(S.lk[a[0]])}" onchange="lkSet('${a[0]}',this.value)"><div class="acts" style="margin-top:8px"><button onclick="lkOpen('${a[0]}')">${i('Ouvrir','Open')}</button><button class="go" onclick="lkMail('${a[0]}')">E-mail</button><button onclick="lkWa('${a[0]}')">WhatsApp</button><button onclick="lkShare('${a[0]}')">${i('Partager','Share')}</button></div></div>`).join('')}<p class="muted" style="margin:6px 0 0;font-size:.85rem">${i('« Partager » ouvre le menu du téléphone (SMS, Instagram, Messenger…). Pour écrire à plusieurs contacts, joignez les adresses dans le message ci-dessous.','“Share” opens the phone’s menu (SMS, Instagram, Messenger…). To write to several contacts, attach the links in the message below.')}</p></div>`}
+
+function sendLink(j,k){
+  const c=S.contacts[j];if(!c||!S.lk[k])return;
+  S.c.type=k==='site'?'site':k==='ig'?'insta':'portfolio';
+  S.c.title=S.sig||'…';S.c.note='';S.c.link=S.lk[k];
+  S.c.to=c.e;S.c.toName=c.n;S.cameFrom='k';save();T('c');
+  setTimeout(function(){try{gen()}catch(e){}},60);
+}
+
+/* =================== CONFIRMATION INTÉGRÉE =================== */
+let askCb=null;
+function ask(msg,okLabel,cb){
+  askCb=cb;$('#askm').textContent=msg;
+  $('#asky').textContent=okLabel||'OK';$('#askn').textContent=i('Annuler','Cancel');
+  $('#asky').onclick=()=>{const f=askCb;askClose();if(f)f()};
+  $('#askn').onclick=askClose;
+  $('#ask').hidden=false;$('#askn').focus();
+}
+function askClose(){askCb=null;$('#ask').hidden=true}
+$('#ask').addEventListener('click',e=>{if(e.target.id==='ask')askClose()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#ask').hidden)askClose()});
+
+/* =================== ANNULER UNE SUPPRESSION =================== */
+let undoFn=null,undoT=null;
+function toast(msg,fn){
+  const t=$('#toast');undoFn=fn||null;
+  t.innerHTML='<span>'+esc(msg)+'</span>'+(fn?'<button id="undob">'+i('Annuler','Undo')+'</button>':'');
+  t.hidden=false;clearTimeout(undoT);
+  undoT=setTimeout(()=>{t.hidden=true;undoFn=null},8000);
+  if(fn)$('#undob').onclick=()=>{const f=undoFn;undoFn=null;t.hidden=true;clearTimeout(undoT);if(f)f()};
+}
+
+/* =================== GUIDE D'UTILISATION =================== */
+const GD=[
+["h",["Noter une idée","Note an idea"],["Sur la page Atelier, tapez l’idée sous « Une idée ? » puis touchez Noter. Elle rejoint Créations avec l’étape Idée.","On the Studio page, type the idea under “An idea?” then tap Save. It goes to Creations with the Idea stage."]],
+["h",["Comprendre la file du jour","Understand today’s queue"],["Sur l’Atelier, la file du jour réunit les relances à faire, les contacts sans nouvelles depuis longtemps, les deadlines proches et les factures à suivre. Touchez Fait, Ouvrir ou Marquer payée.","On the Studio page, today’s queue lists follow-ups, contacts you haven’t heard from, upcoming deadlines and invoices to track. Tap Done, Open or Mark paid."]],
+["h",["Voir où j’en suis","See where I stand"],["Les compteurs de l’Atelier (idées, en cours, terminées, en vente, vendues) sont touchables : ils ouvrent la liste correspondante.","The Studio counters (ideas, in progress, finished, for sale, sold) are tappable: they open the matching list."]],
+["h",["Sauvegarder mes données","Back up my data"],["Tout en bas de l’Atelier, carte Sauvegarde : Exporter tout crée un fichier. À faire régulièrement, et toujours avant de changer d’appareil. Gardez-le aussi ailleurs que sur l’appareil.","At the bottom of the Studio page, Backup card: Export all creates a file. Do it regularly, and always before switching devices. Keep a copy somewhere other than the device."]],
+["h",["Passer sur un autre appareil","Move to another device"],["Exportez sur l’ancien appareil, envoyez-vous le fichier (e-mail, Drive, iCloud), puis Importer sur le nouveau. L’import remplace les données de cet appareil.","Export on the old device, send yourself the file (e-mail, Drive, iCloud), then Import on the new one. Importing replaces that device’s data."]],
+["h",["Mettre à jour l’appli","Update the app"],["Quand un bandeau jaune « Nouvelle version disponible » apparaît, touchez Mettre à jour. Sinon : Atelier, en bas, Vérifier les mises à jour. Vos données restent sur l’appareil.","When a yellow “New version available” banner appears, tap Update. Otherwise: Studio page, bottom, Check for updates. Your data stays on the device."]],
+["h",["Changer de langue","Change language"],["Boutons FR et EN en haut à droite de l’image. Les textes générés pour vos messages ont leur propre choix de langue dans Communiquer.","FR and EN buttons at the top right of the picture. Generated message texts have their own language choice in Reach out."]],
+["w",["Ajouter une œuvre ou une idée","Add a work or an idea"],["Créations, « ＋ Ajouter une idée ou une œuvre » : titre, technique, dimensions, prix, statut, étape, notes (où, à qui, comment) et photo.","Creations, “＋ Add an idea or a work”: title, medium, size, price, status, stage, notes (where, to whom, how) and photo."]],
+["w",["Suivre l’avancement d’une pièce","Track a piece’s progress"],["Chaque pièce a une étape : Idée, En cours, Terminée. Changez-la dans la liste. Filtrez par étape ou cherchez un mot avec la barre de recherche.","Each piece has a stage: Idea, In progress, Finished. Change it in the list. Filter by stage or search a word with the search bar."]],
+["w",["Annuler une suppression","Undo a deletion"],["Après avoir supprimé un contact, une œuvre, un commerce ou une facture, un bandeau en bas de l’écran propose Annuler pendant 8 secondes.","After deleting a contact, work, shop or invoice, a banner at the bottom offers Undo for 8 seconds."]],
+["v",["Faire un plan de vente","Make a sales plan"],["Dans Créations, bouton Plan de vente sur l’œuvre, ou onglet Ventes puis Planifier. Choisissez le mode (vente, dépôt-vente, commande), le prix visé et les acheteurs ciblés, puis cochez les étapes.","In Creations, tap Sales plan on a work, or go to Sales then Plan. Choose the mode (sale, consignment, commission), the asking price and target buyers, then tick the steps."]],
+["v",["Préparer un reel","Prepare a reel"],["Dans le plan de vente : les six séquences du reel à cocher pendant le tournage, avec la légende et les hashtags à copier.","In the sales plan: the six reel shots to tick while filming, with the caption and hashtags to copy."]],
+["v",["Noter ce que j’ai fait","Log what I did"],["Plan de vente, carte Journal : une ligne datée par action (message envoyé, visite, réponse). Les dernières actions s’affichent sur l’Atelier.","Sales plan, Log card: one dated line per action (message sent, visit, reply). Recent actions show on the Studio page."]],
+["v",["Enregistrer une vente","Record a sale"],["Plan de vente, carte Vente : prix final, acheteur ou lieu, date. La pièce passe en Vendue. L’historique s’exporte en CSV depuis l’onglet Ventes.","Sales plan, Sale card: final price, buyer or place, date. The piece becomes Sold. The history exports to CSV from the Sales tab."]],
+["f",["Créer une facture","Create an invoice"],["Factures : remplissez Mes coordonnées une seule fois (elles apparaissent en haut de chaque facture), puis Nouvelle facture. Imprimer / PDF pour l’envoyer, Marquer payée à réception, Exporter CSV pour la comptabilité.","Invoices: fill in My details once (they appear at the top of every invoice), then New invoice. Print / PDF to send it, Mark paid on receipt, Export CSV for your accounts."]],
+["k",["Ajouter un contact","Add a contact"],["Contacts, « ＋ Ajouter un contact » : prénom, e-mail, langue, catégorie, et la case « A accepté de recevoir mes nouvelles ». Sans cet accord, le contact ne reçoit pas les envois groupés.","Contacts, “＋ Add a contact”: first name, e-mail, language, category, and the box “Agreed to receive my news”. Without it, the contact gets no group mailings."]],
+["k",["Classer mes contacts","Sort my contacts"],["Catégories : clients, intéressés, amis, commerçants, galeries, presse, autres. Changez-la sur la fiche. Les boutons en haut filtrent la liste ; la barre de recherche trouve un nom ou un e-mail.","Categories: clients, interested, friends, shopkeepers, galleries, press, other. Change it on the card. The buttons at the top filter the list; the search bar finds a name or e-mail."]],
+["k",["Historique et relances d’un contact","A contact’s history and follow-ups"],["Touchez ▸ Historique sur la fiche : achats, cadeaux, rencontres… Programmez une relance (+3j à +30j) ; elle réapparaît dans la file du jour de l’Atelier.","Tap ▸ History on the card: purchases, gifts, meetings… Schedule a follow-up (+3d to +30d); it reappears in the Studio’s daily queue."]],
+["k",["Envoyer mon site, Instagram ou portfolio à un contact","Send my site, Instagram or portfolio to a contact"],["Fiche ouverte : boutons Portfolio, Site, Instagram. Le message se prépare dans Communiquer ; rien ne part sans votre validation.","Open card: Portfolio, Site, Instagram buttons. The message is prepared in Reach out; nothing is sent without your approval."]],
+["k",["Supprimer ou exporter des contacts","Delete or export contacts"],["Supprimer : ✕ sur la fiche puis confirmer (Annuler possible 8 secondes). Exporter : bouton Exporter en CSV, utile pour Brevo ou MailerLite.","Delete: ✕ on the card then confirm (Undo for 8 seconds). Export: Export CSV button, useful for Brevo or MailerLite."]],
+["m",["Comprendre les tarifs","Understand pricing"],["Fixez vos tarifs en fonction de votre travail. Commencez par des petites pièces pour créer la relation avec les commerces, puis augmentez.","Set your prices based on your work. Start with small pieces to build the relationship, then increase."]],
+["m",["Écrire à un commerce","Write to a shop"],["Commerces, carte Message d’approche : choisissez le commerce et la langue. Copiez le texte ou ouvrez-le dans votre messagerie.","Shops, Outreach message card: pick the shop and language. Copy the text or open it in your mail app."]],
+["m",["Trouver d’autres commerces","Find more shops"],["Commerces, carte Trouver d’autres commerces : choisissez la zone puis un type ; Google Maps s’ouvre. Ajoutez ensuite le commerce à votre liste.","Shops, Find more shops card: choose the area then a type; Google Maps opens. Then add the shop to your list."]],
+["m",["Ajouter un pack de quartier","Add a neighbourhood pack"],["Commerces, Ajouter un pack de quartier : des listes toutes prêtes. Vérifiez toujours l’adresse avant de vous déplacer.","Shops, Add a neighbourhood pack: ready-made lists. Always check the address before going."]],
+["m",["Suivre un commerce","Track a shop"],["Touchez le statut d’un commerce pour le faire avancer : À contacter, Contacté, Intéressé, Client.","Tap a shop’s status to move it forward: To contact, Contacted, Interested, Client."]],
+["c",["Écrire à mes contacts","Write to my contacts"],["Communiquer, Préparer un message : sujet, titre, date, lieu, un mot en plus, langue, puis Créer les textes. Relisez, puis Ouvrir dans ma messagerie : les contacts avec accord sont mis en copie cachée.","Reach out, Write a message: subject, title, date, place, an extra word, language, then Create texts. Read it over, then Open in my mail app: opted-in contacts are added in blind copy."]],
+["c",["Choisir les destinataires","Choose recipients"],["Champ Destinataires : tous les contacts ou une seule catégorie. Seuls ceux qui ont accepté sont ajoutés. Au-delà de 40, passez par Brevo ou MailerLite avec l’export CSV.","Recipients field: all contacts or one category. Only those who opted in are added. Beyond 40, use Brevo or MailerLite with the CSV export."]],
+["c",["Joindre mon site, Instagram ou portfolio","Attach my site, Instagram or portfolio"],["Cases Joindre mes adresses sous le message. La carte Mes adresses en ligne, en haut de Communiquer, envoie un lien seul : E-mail, WhatsApp ou Partager (SMS, Instagram, Messenger sur téléphone). Les adresses sont modifiables.","Attach my links boxes under the message. The My online links card, at the top of Reach out, sends a single link: E-mail, WhatsApp or Share (SMS, Instagram, Messenger on a phone). The addresses are editable."]],
+["c",["Publier sur Instagram ou WhatsApp","Post on Instagram or WhatsApp"],["Après Créer les textes, carte Instagram / WhatsApp : Partager ou Copier. Instagram n’affiche pas de lien cliquable dans une légende : mettez l’adresse dans la bio ou dans une story.","After Create texts, Instagram / WhatsApp card: Share or Copy. Instagram doesn’t make links clickable in a caption: put the address in your bio or a story."]],
+["o",["Chercher des opportunités","Look for opportunities"],["Opportunités : choisissez la zone (vos lieux, définis dans Réglages) puis un type : résidences, marchés, expos et appels, caritatif. Chaque bouton lance une recherche. Vérifiez la date limite sur le site de l’organisateur.","Opportunities: choose the area (your places, set in Settings) then a type: residencies, markets, shows and open calls, charity. Each button runs a search. Check the deadline on the organiser’s site."]],
+["o",["Noter une deadline","Note a deadline"],["Opportunités, Deadlines notées : date limite, titre, notes. Elle remonte dans la file du jour de l’Atelier quand la date approche. Touchez Fait une fois traitée.","Opportunities, Noted deadlines: deadline, title, notes. It surfaces in the Studio’s daily queue as the date nears. Tap Done once handled."]],
+["p",["Retrouver mon parcours","Find my background"],["Parcours : démarche, expositions, résidences et formation. Pratique pour remplir un dossier de candidature ou répondre à une demande de présentation.","Background: approach, exhibitions, residencies and education. Handy for an application or when asked for a presentation."]]
+];
+function G(){
+  const q=S.gq||'',lab=k=>TABS.find(t=>t[0]===k)[1][fr()?0:1];
+  const list=GD.filter(e=>qmatch(q,[e[1][0],e[1][1],e[2][0],e[2][1],lab(e[0])]));
+  const order=TABS.map(t=>t[0]).filter(k=>k!=='g');
+  const groups=order.map(k=>[k,list.filter(e=>e[0]===k)]).filter(g=>g[1].length);
+  return `<div class="card"><h2 style="margin-top:0">${i('Guide d’utilisation','User guide')}</h2>
+<p style="margin:0 0 10px">${i('Tout ce que vous saisissez est enregistré automatiquement sur cet appareil. Pensez à « Exporter tout » (Atelier, en bas) de temps en temps.','Everything you enter is saved automatically on this device. Remember to “Export all” (Studio page, bottom) from time to time.')}</p>
+<label for="gq" style="margin-top:0">${i('Que cherchez-vous ?','What are you looking for?')}</label><input id="gq" value="${esc(q)}" placeholder="${i('facture, relance, Instagram, sauvegarde…','invoice, follow-up, Instagram, backup…')}" oninput="setQ('gq',this.value)"></div>
+${groups.map(g=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:18px 0 8px"><h3 style="margin:0">${lab(g[0])}</h3><button onclick="T('${g[0]}')">${i('Ouvrir l’onglet','Open the tab')}</button></div>${g[1].map(e=>`<details class="card" style="padding:10px 12px" ${q?'open':''}><summary style="cursor:pointer;font-weight:600">${e[1][fr()?0:1]}</summary><p style="margin:8px 0 0">${e[2][fr()?0:1]}</p></details>`).join('')}`).join('')||`<p class="muted">${i('Aucun sujet ne correspond. Essayez un autre mot.','No topic matches. Try another word.')}</p>`}`;
+}
+
+R();
+</script></body></html>
