@@ -253,7 +253,7 @@ const CAT=[['Client','Clients','Clients'],['Interested','Intéressés','Interest
 const TABS=[['a',['Accueil','Home']],['h',['Atelier','Studio']],['w',['Créations','Creations']],['v',['Ventes','Sales']],['f',['Factures','Invoices']],['k',['Contacts','Contacts']],['m',['Commerces','Shops']],['c',['Communiquer','Reach out']],['o',['Opportunités','Opportunities']],['p',['Parcours','Background']],['r',['Réglages','Settings']],['g',['Guide','Guide']]];
 const EX=[];
 function L(l){S.lang=l;save();R()}
-function T(t){S.tab=t;S.sv=null;if(t!=='f'){S.fv=null;S.fset=false}save();R();scrollTo(0,0)}
+function T(t){S.tab=t;S.sv=null;S.wo=null;if(t!=='f'){S.fv=null;S.fset=false}save();R();scrollTo(0,0)}
 function R(){document.documentElement.lang=S.lang;
 $('#lf').className=fr()?'on':'';$('#le').className=fr()?'':'on';
 $('#sub').hidden=true;buildZ();
@@ -269,13 +269,15 @@ ${S.purl?`<p><a href="${esc(S.purl)}" target="_blank" rel="noopener">${i('Portfo
 <div class="card"><h2 style="margin-top:0">${i('Formation','Education')}</h2><p class="muted">${i('Votre parcours de formation.','Your education path.')}</p></div>`}
 const ST={a:['Disponible','Available'],s:['Vendue','Sold'],c:['Sur commande','Commission']};
 function W(){
+  if(S.wo!=null){if(S.works[S.wo])return LAB(S.wo);S.wo=null}
   const q=S.wq||'';
   const list=S.works.map((x,n)=>({x,n})).filter(({x})=>{
     if(S.wf&&S.wf!='all'&&(x.g||'done')!=S.wf)return false;
-    return qmatch(q,[x.t,x.k,x.s,x.y,x.nt,x.p]);
+    return qmatch(q,[x.t,x.k,x.s,x.y,x.nt,x.p,x.in,x.su]);
   });
-  const w=list.map(({x,n})=>`<div class="card work">${x.img?`<img src="${esc(x.img)}" alt="${esc(x.t)}">`:'<div class="ph"></div>'}<div><h3>${esc(x.t)}</h3><div class="muted">${esc(x.k)} ${esc(x.s)} ${x.y?'· '+esc(x.y):''}</div>${x.nt?`<div>${esc(x.nt)}</div>`:''}<p style="margin:6px 0"><span class="tag">${ST[x.st][fr()?0:1]}</span> <select aria-label="${i('Étape','Stage')}" style="width:auto;padding:2px 6px;font-size:.85rem" onchange="S.works[${n}].g=this.value;save();R()">${GS.map(g=>`<option value="${g[0]}" ${(x.g||'done')==g[0]?'selected':''}>${g[fr()?1:2]}</option>`).join('')}</select> ${x.p?`<b>${esc(x.p)}</b>`:''}</p>
-<div class="acts" style="margin-top:6px"><button onclick="ann(${n})">${i('Annoncer','Announce')}</button><button onclick="S.sv=${n};S.tab='v';save();R()">${i('Plan de vente','Sales plan')}</button><button onclick="dw(${n})">${i('Supprimer','Delete')}</button></div></div></div>`).join('');
+  setTimeout(pdfLinks,0);
+  const w=list.map(({x,n})=>`<div class="card work">${x.img?`<img src="${esc(x.img)}" alt="${esc(x.t)}" style="cursor:pointer" onclick="labOpen(${n})">`:x.aud?`<button class="ph" onclick="labOpen(${n})" title="${i('Ouvrir le laboratoire','Open the lab')}" style="display:grid;place-items:center;font-size:2.2rem;padding:0">🎵</button>`:x.pdf?`<a class="ph" href="#" target="_blank" rel="noopener" data-pdf="${esc(x.pdf)}" onclick="return pdfClick(this,${n})" title="${docLab(x)}" style="display:grid;place-items:center;font-size:2.2rem;text-decoration:none">📄</a>`:`<button class="ph" onclick="labOpen(${n})" title="${i('Ouvrir le laboratoire','Open the lab')}" style="padding:0;font-size:1.8rem">🔬</button>`}<div><h3 style="cursor:pointer" onclick="labOpen(${n})">${esc(x.t)}</h3><div class="muted">${esc(x.k)} ${esc(x.s)} ${x.y?'· '+esc(x.y):''}</div>${x.nt?`<div>${esc(x.nt)}</div>`:''}<p style="margin:6px 0"><span class="tag">${ST[x.st][fr()?0:1]}</span> <select aria-label="${i('Étape','Stage')}" style="width:auto;padding:2px 6px;font-size:.85rem" onchange="S.works[${n}].g=this.value;save();R()">${GS.map(g=>`<option value="${g[0]}" ${(x.g||'done')==g[0]?'selected':''}>${g[fr()?1:2]}</option>`).join('')}</select> ${x.p?`<b>${esc(x.p)}</b>`:''}</p><div style="display:flex;gap:8px;align-items:center;max-width:320px"><div style="flex:1">${bar(pcOf(x))}</div><small>${pcOf(x)} %</small></div>
+<div class="acts" style="margin-top:6px"><button class="go" onclick="labOpen(${n})">🔬 ${i('Laboratoire','Lab')}</button>${x.pdf?`<a class="btn" style="text-decoration:none" href="#" target="_blank" rel="noopener" data-pdf="${esc(x.pdf)}" onclick="return pdfClick(this,${n})">📄 ${docLab(x)}</a>`:''}<button onclick="ann(${n})">${i('Annoncer','Announce')}</button><button onclick="S.sv=${n};S.tab='v';save();R()">${i('Plan de vente','Sales plan')}</button><button onclick="dw(${n})">${i('Supprimer','Delete')}</button></div></div></div>`).join('');
   const counts=[['all','Tout','All',S.works.length]].concat(GS.map(g=>[g[0],g[1],g[2],S.works.filter(x=>(x.g||'done')==g[0]).length]));
   const has=S.works.length>0;
   return `${has?`<div class="card" style="padding:10px"><input id="wq" value="${esc(q)}" placeholder="${i('Rechercher une œuvre…','Search a work…')}" oninput="setQ('wq',this.value)" style="margin:0"></div>
@@ -286,13 +288,39 @@ ${w||(q?`<p class="muted">${i('Aucune œuvre ne correspond à cette recherche.',
 <label for="wk">${i('Technique','Medium')}</label><input id="wk" placeholder="${i('Technique mixte sur toile','Mixed media on canvas')}">
 <div class="g2"><div><label for="ws">${i('Dimensions','Size')}</label><input id="ws" placeholder="70 x 40 cm"></div><div><label for="wy">${i('Année','Year')}</label><input id="wy" inputmode="numeric"></div>
 <div><label for="wp">${i('Prix','Price')}</label><input id="wp" placeholder="${esc(S.artist.cur||'€')}"></div><div><label for="wst">${i('Statut','Status')}</label><select id="wst">${Object.keys(ST).map(k=>`<option value="${k}">${ST[k][fr()?0:1]}</option>`).join('')}</select></div></div>
-<label for="wg">${i('Étape','Stage')}</label><select id="wg">${GS.map(g=>`<option value="${g[0]}" ${g[0]=='done'?'selected':''}>${g[fr()?1:2]}</option>`).join('')}</select><label for="wn">${i('Notes (où, à qui, comment)','Notes (where, to whom, how)')}</label><textarea id="wn" style="min-height:70px"></textarea><label for="wi">Photo</label><input id="wi" type="file" accept="image/*">
+<label for="wg">${i('Étape','Stage')}</label><select id="wg">${GS.map(g=>`<option value="${g[0]}" ${g[0]=='done'?'selected':''}>${g[fr()?1:2]}</option>`).join('')}</select><label for="wn">${i('Notes (où, à qui, comment)','Notes (where, to whom, how)')}</label><textarea id="wn" style="min-height:70px"></textarea><label for="wi">${i('Vignette : photo, PDF, texte ou son léger (JPG, PNG, PDF, TXT, MP3, M4A…)','Thumbnail: photo, PDF, text or light audio (JPG, PNG, PDF, TXT, MP3, M4A…)')}</label><input id="wi" type="file" accept="image/*,.jpg,.jpeg,.png,application/pdf,.pdf,text/plain,.txt,audio/*,.mp3,.m4a,.aac,.wav,.ogg,.opus">
 <div class="acts"><button class="go" onclick="aw()">${i('Enregistrer','Save')}</button></div></details>`
 }
 function aw(){const t=$('#wt').value.trim();if(!t){$('#wt').focus();return}
 const o={t,k:$('#wk').value,s:$('#ws').value,y:$('#wy').value,p:$('#wp').value,st:$('#wst').value,g:$('#wg').value,nt:$('#wn').value,img:''},f=$('#wi').files[0];
-const done=()=>{S.works.unshift(o);save();R()};
-if(!f)return done();const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,600/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);o.img=c.toDataURL('image/jpeg',.72);done()};im.src=r.result};r.readAsDataURL(f)}
+o.pc=o.g==='done'?100:o.g==='wip'?50:0;o.id=uid();
+/* la nouvelle création s'ouvre directement dans son laboratoire */
+setVig(o,f).then(()=>{S.works.unshift(o);S.wo=0;save();R();scrollTo(0,0)},()=>{})}
+function labOpen(n){S.wo=n;save();R();scrollTo(0,0)}
+/* PDF des œuvres : gardés dans la base du navigateur (IndexedDB), trop lourds pour le stockage principal.
+   Ils partent avec « Exporter tout » et reviennent avec « Importer ». */
+const isPdf=f=>!!f&&(f.type==='application/pdf'||f.type==='text/plain'||/\.(pdf|txt)$/i.test(f.name||''));
+/* type à donner au fichier pour l'ouvrir (accents lisibles pour un texte) */
+const docBlob=(b,n)=>/\.txt$/i.test(n||'')||/^text\//.test(b.type)?new Blob([b],{type:'text/plain;charset=utf-8'}):b.type==='application/pdf'?b:new Blob([b],{type:'application/pdf'});
+const docLab=x=>/\.txt$/i.test(x.pdfn||'')?i('Ouvrir le texte','Open the text'):i('Ouvrir le PDF','Open the PDF');
+let pdfDb=null;
+function pdfStore(mode){return (pdfDb||(pdfDb=new Promise((ok,ko)=>{const r=indexedDB.open('atelier_pdf',1);r.onupgradeneeded=()=>r.result.createObjectStore('f');r.onsuccess=()=>ok(r.result);r.onerror=()=>ko(r.error)}))).then(d=>d.transaction('f',mode).objectStore('f'))}
+function pdfReq(q){return new Promise((ok,ko)=>{q.onsuccess=()=>ok(q.result);q.onerror=()=>ko(q.error)})}
+function pdfPut(b,id){id=id||'p'+Date.now().toString(36);return pdfStore('readwrite').then(s=>pdfReq(s.put(b,id))).then(()=>id)}
+function pdfGet(id){return pdfStore('readonly').then(s=>pdfReq(s.get(id)))}
+function pdfOpen(n){const x=S.works[n];if(!x||!x.pdf)return;const w=window.open('','_blank');
+  pdfGet(x.pdf).then(b=>{if(!b)throw 0;const u=URL.createObjectURL(docBlob(b,x.pdfn));
+    if(w)w.location.href=u;else{const a=document.createElement('a');a.href=u;a.download=x.pdfn||'oeuvre.pdf';a.click()}
+    setTimeout(()=>URL.revokeObjectURL(u),120000)}).catch(()=>{if(w)w.close();alert(i('PDF introuvable sur cet appareil.','PDF not found on this device.'))})}
+/* Les liens 📄 reçoivent l'adresse du PDF dès l'affichage : le toucher l'ouvre directement (iPad compris) */
+const pdfUrls={};
+function pdfLinks(){document.querySelectorAll('[data-pdf]').forEach(a=>{const id=a.dataset.pdf,w=S.works.find(x=>x.pdf===id);
+  if(pdfUrls[id]){a.href=pdfUrls[id];return}
+  pdfGet(id).then(b=>{if(!b)return;pdfUrls[id]=URL.createObjectURL(docBlob(b,w&&w.pdfn));a.href=pdfUrls[id]}).catch(()=>{})})}
+function pdfClick(a,n){if(a.href.indexOf('blob:')===0)return true;pdfOpen(n);return false}
+/* Au démarrage : on retire les PDF des œuvres supprimées */
+setTimeout(()=>{const keep=new Set(allDocIds());
+  pdfStore('readwrite').then(s=>{const q=s.getAllKeys();q.onsuccess=()=>q.result.forEach(k=>{if(!keep.has(k))s.delete(k)})}).catch(()=>{})},4000)
 function dw(n){const w=S.works[n];if(!w)return;ask(i('Supprimer cette œuvre ?','Delete this work?'),i('Supprimer','Delete'),()=>{const k=S.works.indexOf(w);if(k<0)return;const item=S.works.splice(k,1)[0];save();R();toast(i('Œuvre supprimée','Work deleted'),()=>{S.works.splice(Math.min(k,S.works.length),0,item);save();R()})})}
 function ann(n){const x=S.works[n];S.c.type='work';S.c.title=x.t;S.c.note=[x.k,x.s,x.p].filter(Boolean).join(', ');save();T('c')}
 const TY={work:['Nouvelle œuvre','New work'],expo:['Prochaine expo','Upcoming show'],project:['Projet en cours','Work in progress'],workshop:['Atelier','Workshop'],portfolio:['Portfolio','Portfolio'],site:['Mon site','My website'],insta:['Mon Instagram','My Instagram']};
@@ -662,9 +690,12 @@ return `<div class="card"><h2 style="margin-top:0">${i('File du jour','Today’s
 <div class="g2"><div class="card"><h3>${i('À qui vendre','Who to sell to')}</h3><p style="margin:6px 0">${S.contacts.length} contacts · ${S.contacts.filter(x=>x.ok).length} ${i('avec accord','opted in')}</p><small class="muted">${CAT.map(k=>[k,S.contacts.filter(x=>x.t==k[0]).length]).filter(a=>a[1]).map(a=>a[0][fr()?1:2]+' '+a[1]).join(' · ')}</small><div class="acts"><button onclick="T('k')">Contacts</button><button onclick="T('c')">${i('Écrire','Write')}</button></div></div>
 <div class="card"><h3>${i('Où vendre','Where to sell')}</h3><p style="margin:6px 0">${S.pr.length} ${i('commerces suivis','shops tracked')}</p><small class="muted">${PS.map((q,j)=>[q,S.pr.filter(x=>x.s==j).length]).filter(a=>a[1]).map(a=>a[0][fr()?0:1]+' '+a[1]).join(' · ')}</small><div class="acts"><button onclick="T('m')">${i('Commerces','Shops')}</button><button onclick="T('o')">${i('Opportunités','Opportunities')}</button></div></div></div>
 <div class="card"><h3>${i('Dernières actions','Recent actions')}</h3>${lg.slice(0,5).map(a=>`<div class="row" style="grid-template-columns:5.5rem 1fr"><b style="font-size:.8rem">${a[0]}</b><div><b>${esc(a[1])}</b> · ${esc(a[2])}</div></div>`).join('')||`<p class="muted" style="margin:0">${i('Le journal de vos pièces apparaîtra ici.','Your pieces’ logs will appear here.')}</p>`}</div>
-<div class="card"><h3>${i('Sauvegarde','Backup')}</h3><p class="muted" style="margin:6px 0">${S.bk?i('Dernière sauvegarde : ','Last backup: ')+S.bk+'. ':i('Pas encore de sauvegarde. ','No backup yet. ')}${i('Pour changer d’appareil : exportez ici, puis importez sur l’autre. L’import remplace les données de l’appareil.','To switch devices: export here, then import on the other one. Importing replaces that device’s data.')}</p><div class="acts"><button class="go" onclick="ex()">${i('Exporter tout','Export all')}</button><button onclick="$('#imp').click()">${i('Importer','Import')}</button><input id="imp" type="file" accept=".json,application/json" hidden onchange="im(this.files[0])"><button onclick="chkUpd(true)">${i('Vérifier les mises à jour','Check for updates')}</button></div><p class="muted" style="margin:8px 0 0;font-size:.85rem">Version ${APP_VERSION}</p></div>`} function ex(){S.bk=TD();save();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({app:'atelier',v:1,d:TD(),S})],{type:'application/json'}));a.download='atelier-sauvegarde-'+TD()+'.json';a.click();R()}
-function im(f){if(!f)return;const r=new FileReader();r.onload=()=>{let d;try{const o=JSON.parse(r.result);d=o&&o.S;if(!d||!Array.isArray(d.works)||!Array.isArray(d.contacts))throw 0}catch(e){alert(i('Fichier non valide.','Invalid file.'));return}
-ask(i('Remplacer toutes les données de cet appareil par celles du fichier ?','Replace all data on this device with the file’s data?'),i('Remplacer','Replace'),()=>{try{localStorage.setItem('atelier_v2',JSON.stringify(d));location.reload()}catch(e){alert(i('Import impossible : stockage plein.','Import failed: storage full.'))}})};r.readAsText(f)}
+<div class="card"><h3>${i('Sauvegarde','Backup')}</h3><p class="muted" style="margin:6px 0">${S.bk?i('Dernière sauvegarde : ','Last backup: ')+S.bk+'. ':i('Pas encore de sauvegarde. ','No backup yet. ')}${i('Pour changer d’appareil : exportez ici, puis importez sur l’autre. L’import remplace les données de l’appareil.','To switch devices: export here, then import on the other one. Importing replaces that device’s data.')}</p><div class="acts"><button class="go" onclick="ex()">${i('Exporter tout','Export all')}</button><button onclick="$('#imp').click()">${i('Importer','Import')}</button><input id="imp" type="file" accept=".json,application/json" hidden onchange="im(this.files[0])"><button onclick="chkUpd(true)">${i('Vérifier les mises à jour','Check for updates')}</button></div><p class="muted" style="margin:8px 0 0;font-size:.85rem">Version ${APP_VERSION}</p></div>`} function ex(){S.bk=TD();save();const pdfs={};
+  Promise.all(allDocIds().map(id=>pdfGet(id).then(b=>b&&new Promise(ok=>{const r=new FileReader();r.onload=()=>{pdfs[id]=r.result;ok()};r.onerror=()=>ok();r.readAsDataURL(b)})).catch(()=>{}))).then(()=>{
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({app:'atelier',v:1,d:TD(),S,pdfs})],{type:'application/json'}));a.download='atelier-sauvegarde-'+TD()+'.json';a.click();R()})}
+function im(f){if(!f)return;const r=new FileReader();r.onload=()=>{let d,pd;try{const o=JSON.parse(r.result);d=o&&o.S;pd=(o&&o.pdfs)||{};if(!d||!Array.isArray(d.works)||!Array.isArray(d.contacts))throw 0}catch(e){alert(i('Fichier non valide.','Invalid file.'));return}
+ask(i('Remplacer toutes les données de cet appareil par celles du fichier ?','Replace all data on this device with the file’s data?'),i('Remplacer','Replace'),()=>{try{localStorage.setItem('atelier_v2',JSON.stringify(d))}catch(e){alert(i('Import impossible : stockage plein.','Import failed: storage full.'));return}
+  Promise.all(Object.keys(pd).map(id=>fetch(pd[id]).then(x=>x.blob()).then(b=>pdfPut(b,id)).catch(()=>{}))).then(()=>location.reload())})};r.readAsText(f)}
 
 
 /* ===================== FACTURES ===================== */
@@ -971,7 +1002,7 @@ ${S.zones.map((z,k)=>`<div class="row" style="grid-template-columns:1fr auto;ali
 ${S.topics.map((x,k)=>`<div class="row" style="grid-template-columns:1fr auto;align-items:center"><div><b>${esc(x.l)}</b><br><small class="muted">${esc(x.q)}</small></div><button onclick="tDel(${k})">${i('Retirer','Remove')}</button></div>`).join('')}
 <div class="g2"><div><label for="tl">${i('Nom du bouton','Button name')}</label><input id="tl" placeholder="${i('Salons','Fairs')}"></div><div><label for="tq">${i('Mots recherchés','Search words')}</label><input id="tq" placeholder="${i('salon créateurs exposants','makers fair exhibitors')}"></div></div>
 <div class="acts"><button class="go" onclick="tAdd()">${i('Ajouter ce sujet','Add this topic')}</button></div></div>
-<div class="card"><h2 style="margin-top:0">${i('Données de cet appareil','Data on this device')}</h2><p class="muted">${i('Tout est enregistré uniquement dans ce navigateur. Effacer remet l’appli à zéro.','Everything is stored only in this browser. Erasing resets the app to blank.')}</p><div class="acts"><button onclick="ask(i('Effacer toutes les données de cet appareil ?','Erase all data on this device?'),i('Effacer','Erase'),()=>{try{localStorage.removeItem('atelier_v2')}catch(e){}location.reload()})">${i('Tout effacer','Erase everything')}</button></div></div>`}
+<div class="card"><h2 style="margin-top:0">${i('Données de cet appareil','Data on this device')}</h2><p class="muted">${i('Tout est enregistré uniquement dans ce navigateur. Effacer remet l’appli à zéro.','Everything is stored only in this browser. Erasing resets the app to blank.')}</p><div class="acts"><button onclick="ask(i('Effacer toutes les données de cet appareil ?','Erase all data on this device?'),i('Effacer','Erase'),()=>{try{localStorage.removeItem('atelier_v2')}catch(e){}try{indexedDB.deleteDatabase('atelier_pdf')}catch(e){}location.reload()})">${i('Tout effacer','Erase everything')}</button></div></div>`}
 const LKS=[['site',['Mon site','My website'],'🌐'],['ig',['Instagram','Instagram'],'📷'],['pf',['Portfolio','Portfolio'],'📁'],['fb',['Facebook','Facebook'],'👍'],['tk',['TikTok','TikTok'],'🎵'],['li',['LinkedIn','LinkedIn'],'💼']];
 function lkMsg(k){
   const ls=S.c.l==='both'?['fr','en']:[S.c.l||'fr'],u=S.lk[k];
@@ -1027,8 +1058,10 @@ const GD=[
 ["h",["Passer sur un autre appareil","Move to another device"],["Exportez sur l’ancien appareil, envoyez-vous le fichier (e-mail, Drive, iCloud), puis Importer sur le nouveau. L’import remplace les données de cet appareil.","Export on the old device, send yourself the file (e-mail, Drive, iCloud), then Import on the new one. Importing replaces that device’s data."]],
 ["h",["Mettre à jour l’appli","Update the app"],["Quand un bandeau jaune « Nouvelle version disponible » apparaît, touchez Mettre à jour. Sinon : Atelier, en bas, Vérifier les mises à jour. Vos données restent sur l’appareil.","When a yellow “New version available” banner appears, tap Update. Otherwise: Studio page, bottom, Check for updates. Your data stays on the device."]],
 ["h",["Changer de langue","Change language"],["Boutons FR et EN en haut à droite de l’image. Les textes générés pour vos messages ont leur propre choix de langue dans Communiquer.","FR and EN buttons at the top right of the picture. Generated message texts have their own language choice in Reach out."]],
-["w",["Ajouter une œuvre ou une idée","Add a work or an idea"],["Créations, « ＋ Ajouter une idée ou une œuvre » : titre, technique, dimensions, prix, statut, étape, notes (où, à qui, comment) et photo.","Creations, “＋ Add an idea or a work”: title, medium, size, price, status, stage, notes (where, to whom, how) and photo."]],
-["w",["Suivre l’avancement d’une pièce","Track a piece’s progress"],["Chaque pièce a une étape : Idée, En cours, Terminée. Changez-la dans la liste. Filtrez par étape ou cherchez un mot avec la barre de recherche.","Each piece has a stage: Idea, In progress, Finished. Change it in the list. Filter by stage or search a word with the search bar."]],
+["w",["Ajouter une œuvre ou une idée","Add a work or an idea"],["Créations, « ＋ Ajouter une idée ou une œuvre » : titre, technique, dimensions, prix, statut, étape, notes et vignette (photo, PDF, texte ou son léger). La création s’ouvre ensuite dans son laboratoire.","Creations, “＋ Add an idea or a work”: title, medium, size, price, status, stage, notes and thumbnail (photo, PDF, text or light audio). The piece then opens in its lab."]],
+["w",["Le laboratoire d’une création","A piece’s lab"],["Touchez 🔬 Laboratoire (ou la vignette, ou le titre). Vous y trouvez : la vignette à changer, l’avancement en %, le journal de création, les idées (⭐ pour épingler), les inspirations, la palette de couleurs, les matériaux et leur coût, les prochaines étapes, le temps passé et la fiche complète de l’œuvre (bouton Enregistrer).","Tap 🔬 Lab (or the thumbnail, or the title). You’ll find: the thumbnail to change, progress in %, the creation journal, ideas (⭐ to pin), inspirations, colour palette, materials and their cost, next steps, time spent and the full artwork details (Save button)."]],
+["w",["Suivre l’avancement d’une pièce","Track a piece’s progress"],["Dans le laboratoire, faites glisser la barre d’avancement (0 à 100 %) et notez chaque séance dans le journal, avec une photo, un PDF ou un mémo vocal. Dans la liste, filtrez par étape (Idée, En cours, Terminée) ou cherchez un mot.","In the lab, slide the progress bar (0 to 100%) and log each session in the journal, with a photo, a PDF or a voice memo. In the list, filter by stage (Idea, In progress, Finished) or search a word."]],
+["w",["Donner des nouvelles à son mécène","Update your patron"],["Laboratoire, 💌 Donner des nouvelles au mécène : notez son nom et son e-mail, puis envoyez le message tout prêt par e-mail, partagez-le, ou téléchargez la « Page d’aperçu » (vignette, avancement et notes 👁 du journal avec leurs photos) à joindre à l’e-mail. Les notes 🔒 restent privées.","Lab, 💌 Update my patron: enter their name and email, then send the ready-made message by email, share it, or download the “Preview page” (thumbnail, progress and 👁 journal notes with photos) to attach. 🔒 notes stay private."]],
 ["w",["Annuler une suppression","Undo a deletion"],["Après avoir supprimé un contact, une œuvre, un commerce ou une facture, un bandeau en bas de l’écran propose Annuler pendant 8 secondes.","After deleting a contact, work, shop or invoice, a banner at the bottom offers Undo for 8 seconds."]],
 ["v",["Faire un plan de vente","Make a sales plan"],["Dans Créations, bouton Plan de vente sur l’œuvre, ou onglet Ventes puis Planifier. Choisissez le mode (vente, dépôt-vente, commande), le prix visé et les acheteurs ciblés, puis cochez les étapes.","In Creations, tap Sales plan on a work, or go to Sales then Plan. Choose the mode (sale, consignment, commission), the asking price and target buyers, then tick the steps."]],
 ["v",["Préparer un reel","Prepare a reel"],["Dans le plan de vente : les six séquences du reel à cocher pendant le tournage, avec la légende et les hashtags à copier.","In the sales plan: the six reel shots to tick while filming, with the caption and hashtags to copy."]],
@@ -1063,6 +1096,178 @@ function G(){
 <label for="gq" style="margin-top:0">${i('Que cherchez-vous ?','What are you looking for?')}</label><input id="gq" value="${esc(q)}" placeholder="${i('facture, relance, Instagram, sauvegarde…','invoice, follow-up, Instagram, backup…')}" oninput="setQ('gq',this.value)"></div>
 ${groups.map(g=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:18px 0 8px"><h3 style="margin:0">${lab(g[0])}</h3><button onclick="T('${g[0]}')">${i('Ouvrir l’onglet','Open the tab')}</button></div>${g[1].map(e=>`<details class="card" style="padding:10px 12px" ${q?'open':''}><summary style="cursor:pointer;font-weight:600">${e[1][fr()?0:1]}</summary><p style="margin:8px 0 0">${e[2][fr()?0:1]}</p></details>`).join('')}`).join('')||`<p class="muted">${i('Aucun sujet ne correspond. Essayez un autre mot.','No topic matches. Try another word.')}</p>`}`;
 }
+
+/* ===================== LABORATOIRE D'UNE CRÉATION =====================
+   Chaque création s'ouvre sur sa page à elle : vignette (photo, PDF, texte ou son), avancement,
+   journal du déroulement, idées, inspirations, palette, matériaux, étapes, temps passé, fiche,
+   et des nouvelles à envoyer au mécène.
+   Les fichiers lourds (PDF, sons, photos du journal) sont gardés dans la base du navigateur
+   (IndexedDB, comme les PDF) et partent avec « Exporter tout ». */
+const isAud=f=>!!f&&(/^audio\//.test(f.type||'')||/\.(mp3|m4a|aac|wav|ogg|oga|opus|webm|flac)$/i.test(f.name||''));
+const AUD_MAX=10*1024*1024;
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const fileKind=f=>isAud(f)?'aud':isPdf(f)?'doc':'img';
+/* tous les fichiers gardés à part, pour l'export et le ménage au démarrage */
+function allDocIds(){const r=[];S.works.forEach(w=>{if(w.pdf)r.push(w.pdf);if(w.aud)r.push(w.aud);
+  (w.lg||[]).forEach(e=>{if(e.f)r.push(e.f)});(w.insp||[]).forEach(e=>{if(e.f)r.push(e.f)})});return r}
+/* photo réduite : en texte pour la vignette, en fichier pour le journal */
+function shrink(f,max,asBlob){return new Promise((ok,ko)=>{const r=new FileReader();r.onerror=ko;r.onload=()=>{const im=new Image();
+  im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+    c.getContext('2d').drawImage(im,0,0,c.width,c.height);if(asBlob)c.toBlob(b=>b?ok(b):ko(),'image/jpeg',.8);else ok(c.toDataURL('image/jpeg',.75))};
+  im.onerror=ko;im.src=r.result};r.readAsDataURL(f)})}
+const badFile=()=>alert(i('Fichier illisible : choisissez une photo (JPG, PNG), un PDF, un texte (TXT) ou un son léger (MP3, M4A…).','Unreadable file: choose a photo (JPG, PNG), a PDF, a text (TXT) or a light audio file (MP3, M4A…).'));
+const fullDb=()=>alert(i('Ce fichier n’a pas pu être gardé sur cet appareil (mémoire pleine ?).','This file could not be stored on this device (storage full?).'));
+/* La vignette : une seule à la fois (photo, PDF/texte ou son) */
+function setVig(o,f){if(!f)return Promise.resolve(o);const k=fileKind(f);
+  if(k==='aud'&&f.size>AUD_MAX){alert(i('Ce son est trop lourd (10 Mo au plus). Un mémo vocal ou un MP3 court convient très bien.','This audio file is too heavy (10 MB max). A voice memo or a short MP3 works well.'));return Promise.reject()}
+  if(k==='img')return shrink(f,800).then(d=>{o.img=d;delete o.pdf;delete o.pdfn;delete o.aud;delete o.audn;return o},()=>{badFile();throw 0});
+  return pdfPut(f).then(id=>{o.img='';if(k==='aud'){o.aud=id;o.audn=f.name;delete o.pdf;delete o.pdfn}else{o.pdf=id;o.pdfn=f.name;delete o.aud;delete o.audn}return o},()=>{fullDb();throw 0})}
+function wk(n){const w=S.works[n];if(!w)return null;if(!w.id)w.id=uid();
+  ['lg','idees','insp','pal','mat','td','tm'].forEach(k=>{if(!Array.isArray(w[k]))w[k]=[]});if(w.pc==null)w.pc=w.g==='done'?100:w.g==='wip'?50:0;return w}
+const pcOf=x=>x.pc!=null?x.pc:(x.g==='done'?100:x.g==='wip'?50:0);
+const bar=(p,h)=>`<div style="height:${h||8}px;background:var(--line);border-radius:9px;overflow:hidden" role="progressbar" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"><div style="height:100%;width:${p}%;background:${p>=100?'#3c9a6a':'var(--blue)'};border-radius:9px"></div></div>`;
+const hrs=x=>(x.tm||[]).reduce((a,t)=>a+(Number(t.h)||0),0);
+const num=s=>{const v=parseFloat(String(s||'').replace(/\s/g,'').replace(',','.').replace(/[^\d.]/g,''));return isNaN(v)?0:v};
+const fmtD=d=>{if(!d)return'';const p=d.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:d};
+/* affichage des fichiers gardés à part (photos, sons, documents) */
+function labMedia(){document.querySelectorAll('[data-im],[data-au],[data-dc]').forEach(el=>{const id=el.dataset.im||el.dataset.au||el.dataset.dc;
+  const put=u=>{if(el.dataset.im)el.src=u;else if(el.dataset.au)el.src=u;else el.href=u};
+  if(pdfUrls[id])return put(pdfUrls[id]);
+  pdfGet(id).then(b=>{if(!b)return;pdfUrls[id]=URL.createObjectURL(el.dataset.dc?docBlob(b,el.dataset.fn):b);put(pdfUrls[id])}).catch(()=>{})})}
+function mediaHtml(id,ft,fn,big){if(!id)return'';
+  if(ft==='img')return `<img data-im="${esc(id)}" alt="" style="display:block;max-width:100%;max-height:${big?420:240}px;border-radius:var(--radius-sm);margin:8px 0">`;
+  if(ft==='aud')return `<audio controls preload="none" data-au="${esc(id)}" style="width:100%;margin:8px 0"></audio>`;
+  return `<p style="margin:8px 0"><a class="btn" style="text-decoration:none" href="#" target="_blank" rel="noopener" data-dc="${esc(id)}" data-fn="${esc(fn||'')}">📄 ${esc(fn||i('Document','Document'))}</a></p>`}
+const LS=k=>`ontoggle="S.lo=S.lo||{};S.lo['${k}']=this.open"${S.lo&&S.lo[k]?' open':''}`;
+function sec(k,ic,fr_,en,cnt,body){return `<details class="card" ${LS(k)}><summary style="cursor:pointer;font-weight:600">${ic} ${i(fr_,en)}${cnt?` <span class="tag" style="margin-left:6px">${cnt}</span>`:''}</summary>${body}</details>`}
+
+function LAB(n){const x=wk(n);if(!x){S.wo=null;return W()}
+  setTimeout(()=>{pdfLinks();labMedia()},0);
+  const p=pcOf(x),cur=esc(S.artist.cur||'€'),h=hrs(x),pr=num(x.p);
+  const vig=x.img?`<img src="${esc(x.img)}" alt="${esc(x.t)}" style="display:block;width:100%;max-height:420px;object-fit:contain;background:var(--wall);border-radius:var(--radius-sm)">`
+    :x.pdf?`<a class="btn" style="text-decoration:none;display:grid;place-items:center;height:160px;font-size:1.1rem" href="#" target="_blank" rel="noopener" data-pdf="${esc(x.pdf)}" onclick="return pdfClick(this,${n})">📄 ${docLab(x)}</a>`
+    :x.aud?`<div style="display:grid;place-items:center;height:110px;font-size:3rem">🎵</div><audio controls preload="none" data-au="${esc(x.aud)}" style="width:100%"></audio><small class="muted">${esc(x.audn||'')}</small>`
+    :`<div class="ph" style="width:100%;height:160px;display:grid;place-items:center;font-size:2.4rem">🖼️</div>`;
+  const lg=x.lg.map((e,j)=>`<div class="row" style="grid-template-columns:1fr auto;align-items:start"><div><b>${fmtD(e.d)}</b> · <small>${e.pc!=null?e.pc+' %':''}${e.m?' · 👁 '+i('visible du mécène','shared with patron'):' · 🔒 '+i('privé','private')}</small><div style="white-space:pre-wrap">${esc(e.t)}</div>${mediaHtml(e.f,e.ft,e.fn)}</div><div style="display:flex;flex-direction:column;gap:6px"><button title="${i('Montrer ou cacher au mécène','Show or hide to patron')}" onclick="labTog(${n},'lg',${j},'m')">${e.m?'👁':'🔒'}</button><button title="${i('Supprimer','Delete')}" onclick="labDel(${n},'lg',${j})">✕</button></div></div>`).join('');
+  const ideas=x.idees.map((e,j)=>({e,j})).sort((a,b)=>(b.e.pin?1:0)-(a.e.pin?1:0)).map(({e,j})=>`<div class="row" style="grid-template-columns:auto 1fr auto;align-items:start"><button title="${i('Épingler','Pin')}" onclick="labTog(${n},'idees',${j},'pin')">${e.pin?'⭐':'☆'}</button><div><small class="muted">${fmtD(e.d)}</small><div style="white-space:pre-wrap">${esc(e.t)}</div></div><button onclick="labDel(${n},'idees',${j})">✕</button></div>`).join('');
+  const insp=x.insp.map((e,j)=>`<div class="card" style="padding:10px;margin:0;position:relative">${e.f?mediaHtml(e.f,e.ft,e.fn):''}${e.u?`<a href="${esc(e.u)}" target="_blank" rel="noopener" style="word-break:break-all">${esc(e.u)}</a>`:''}${e.t?`<div>${esc(e.t)}</div>`:''}<button style="position:absolute;top:6px;right:6px;padding:2px 8px;min-height:0" onclick="labDel(${n},'insp',${j})">✕</button></div>`).join('');
+  const pal=x.pal.map((c,j)=>`<button title="${i('Retirer','Remove')} ${esc(c)}" onclick="labDel(${n},'pal',${j})" style="width:46px;height:46px;min-height:0;padding:0;border-radius:50%;background:${esc(c)};border:2px solid var(--paper);box-shadow:var(--shadow)"></button>`).join('');
+  const matT=x.mat.reduce((a,m)=>a+num(m.c),0);
+  const mat=x.mat.map((m,j)=>`<div class="row" style="grid-template-columns:auto 1fr auto auto;align-items:center"><input type="checkbox" aria-label="${i('Acquis','Got it')}" ${m.ok?'checked':''} onchange="labTog(${n},'mat',${j},'ok')" style="width:22px;height:22px;margin:0"><div style="${m.ok?'text-decoration:line-through;opacity:.6':''}">${esc(m.t)}${m.q?` <small class="muted">× ${esc(m.q)}</small>`:''}</div><small>${m.c?esc(m.c)+' '+cur:''}</small><button onclick="labDel(${n},'mat',${j})">✕</button></div>`).join('');
+  const td=x.td.map((t,j)=>`<div class="row" style="grid-template-columns:auto 1fr auto;align-items:center"><input type="checkbox" ${t.ok?'checked':''} onchange="labTog(${n},'td',${j},'ok')" style="width:22px;height:22px;margin:0" aria-label="${i('Fait','Done')}"><div style="${t.ok?'text-decoration:line-through;opacity:.6':''}">${esc(t.t)}</div><button onclick="labDel(${n},'td',${j})">✕</button></div>`).join('');
+  const tdDone=x.td.filter(t=>t.ok).length;
+  const tm=x.tm.slice(0,8).map((t,j)=>`<div class="row" style="grid-template-columns:6rem 1fr auto;align-items:center"><b>${fmtD(t.d)}</b><div>${esc(String(t.h).replace('.',','))} h${t.t?' · '+esc(t.t):''}</div><button onclick="labDel(${n},'tm',${j})">✕</button></div>`).join('');
+  const shown=x.lg.filter(e=>e.m).length;
+  return `<button onclick="S.wo=null;save();R();scrollTo(0,0)">← ${i('Toutes mes créations','All my creations')}</button>
+<h2 style="margin-top:14px">🔬 ${esc(x.t)}</h2><p class="muted" style="margin-top:-6px">${[x.k,x.s,x.y].filter(Boolean).map(esc).join(' · ')||i('Le laboratoire de cette création : tout ce qui la concerne, au même endroit.','This piece’s lab: everything about it in one place.')}</p>
+<div class="g2"><div class="card"><h3>${i('Vignette','Thumbnail')}</h3><p class="muted" style="margin:0 0 8px">${i('C’est l’aperçu que verra votre mécène. Changez-la à chaque étape.','This is the preview your patron will see. Change it at each stage.')}</p>${vig}
+<div class="acts"><button class="go" onclick="$('#lv').click()">🔄 ${i('Changer la vignette','Change thumbnail')}</button>${x.img||x.pdf||x.aud?`<button onclick="labVigDel(${n})">${i('Retirer','Remove')}</button>`:''}</div>
+<input id="lv" type="file" hidden accept="image/*,.jpg,.jpeg,.png,application/pdf,.pdf,text/plain,.txt,audio/*,.mp3,.m4a,.aac,.wav,.ogg,.opus" onchange="labVig(${n},this.files[0])">
+<small class="muted">${i('Photo (JPG, PNG), PDF, texte (TXT) ou son léger (MP3, M4A…, 10 Mo au plus).','Photo (JPG, PNG), PDF, text (TXT) or light audio (MP3, M4A…, 10 MB max).')}</small></div>
+<div class="card"><h3>${i('Avancement','Progress')}</h3><p id="lpcv" style="font-size:2rem;margin:4px 0;font-family:var(--font-display)">${p} %</p>${bar(p,12)}
+<label for="lpc">${i('Faites glisser pour mettre à jour','Slide to update')}</label><input id="lpc" type="range" min="0" max="100" step="5" value="${p}" oninput="$('#lpcv').textContent=this.value+' %'" onchange="labPc(${n},this.value)" style="padding:0">
+<label for="lg_g">${i('Étape','Stage')}</label><select id="lg_g" onchange="S.works[${n}].g=this.value;save();R()">${GS.map(g=>`<option value="${g[0]}" ${(x.g||'done')==g[0]?'selected':''}>${g[fr()?1:2]}</option>`).join('')}</select>
+<p class="muted" style="margin:10px 0 0">${x.dl?'📅 '+i('Échéance : ','Due: ')+fmtD(x.dl)+' · ':''}${h?'⏱ '+String(Math.round(h*10)/10).replace('.',',')+' h · ':''}${x.td.length?'✅ '+tdDone+'/'+x.td.length+' · ':''}${x.lg.length} ${i('notes au journal','journal notes')}</p>
+<div class="acts"><button class="go" onclick="S.lo=S.lo||{};S.lo.mc=true;save();R();setTimeout(()=>{const e=document.getElementById('mcbox');if(e)e.scrollIntoView({behavior:'smooth'})},50)">💌 ${i('Donner des nouvelles au mécène','Update my patron')}</button><button onclick="ann(${n})">${i('Annoncer','Announce')}</button><button onclick="S.sv=${n};S.wo=null;S.tab='v';save();R()">${i('Plan de vente','Sales plan')}</button></div></div></div>
+
+${sec('lg','📓','Journal de création (le déroulement)','Creation journal (how it’s going)',x.lg.length,`<p class="muted" style="margin:0">${i('Notez chaque séance : ce que vous avez fait, une photo, un PDF ou un mémo vocal. Les notes marquées 👁 apparaissent dans les nouvelles au mécène.','Log each session: what you did, a photo, a PDF or a voice memo. Notes marked 👁 show up in your patron updates.')}</p>
+<label for="lgt">${i('Aujourd’hui…','Today…')}</label><textarea id="lgt" style="min-height:80px" placeholder="${i('Ex : fond posé, je cherche encore la lumière du ciel.','e.g. Background done, still looking for the sky’s light.')}"></textarea>
+<div class="g2"><div><label for="lgd">Date</label><input id="lgd" type="date" value="${TD()}"></div><div><label for="lgf">${i('Fichier (photo, PDF, texte ou son)','File (photo, PDF, text or audio)')}</label><input id="lgf" type="file" accept="image/*,.jpg,.jpeg,.png,application/pdf,.pdf,text/plain,.txt,audio/*,.mp3,.m4a,.aac,.wav,.ogg,.opus"></div></div>
+<label class="chk"><input id="lgm" type="checkbox" checked style="width:auto"> ${i('Visible par mon mécène','Visible to my patron')}</label>
+<div class="acts"><button class="go" onclick="labLog(${n})">${i('Ajouter au journal','Add to journal')}</button></div>${lg?`<div style="margin-top:12px">${lg}</div>`:''}`)}
+
+${sec('idees','💡','Idées et pistes','Ideas and leads',x.idees.length,`<p class="muted" style="margin:0">${i('Tout ce qui vous passe par la tête : variantes, titres possibles, questions, envies. ⭐ garde une idée en haut.','Anything that crosses your mind: variations, possible titles, questions. ⭐ keeps an idea on top.')}</p>
+<textarea id="idt" style="min-height:70px" placeholder="${i('Et si j’essayais…','What if I tried…')}"></textarea><div class="acts" style="margin-top:8px"><button class="go" onclick="labAdd(${n},'idees')">${i('Noter l’idée','Save idea')}</button></div>${ideas?`<div style="margin-top:12px">${ideas}</div>`:''}`)}
+
+${sec('insp','✨','Inspirations','Inspirations',x.insp.length,`<p class="muted" style="margin:0">${i('Images, liens (Pinterest, musée, article…), citations.','Images, links (Pinterest, museum, article…), quotes.')}</p>
+<label for="isu">${i('Lien','Link')}</label><input id="isu" type="url" placeholder="https://">
+<label for="ist">${i('Note ou citation','Note or quote')}</label><input id="ist">
+<label for="isf">${i('Image ou fichier','Image or file')}</label><input id="isf" type="file" accept="image/*,.jpg,.jpeg,.png,application/pdf,.pdf,text/plain,.txt,audio/*,.mp3,.m4a">
+<div class="acts"><button class="go" onclick="labInsp(${n})">${i('Ajouter','Add')}</button></div>${insp?`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:12px">${insp}</div>`:''}`)}
+
+${sec('pal','🎨','Palette de couleurs','Colour palette',x.pal.length,`<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:6px 0">${pal||`<span class="muted">${i('Aucune couleur pour le moment.','No colours yet.')}</span>`}</div>
+<div style="display:flex;gap:10px;align-items:center;margin-top:8px"><input id="plc" type="color" value="#3a6fd8" style="width:60px;height:46px;padding:2px" aria-label="${i('Couleur','Colour')}"><button class="go" onclick="labPal(${n})">${i('Ajouter la couleur','Add colour')}</button></div><small class="muted">${i('Touchez une pastille pour la retirer.','Tap a swatch to remove it.')}</small>`)}
+
+${sec('mat','🧰','Matériaux et fournitures','Materials and supplies',x.mat.length,`<div class="g2"><div><label for="mtt">${i('Matériau','Material')}</label><input id="mtt" placeholder="${i('Toile 70×40, bleu de Prusse…','70×40 canvas, Prussian blue…')}"></div><div class="g2" style="grid-template-columns:1fr 1fr"><div><label for="mtq">${i('Quantité','Qty')}</label><input id="mtq"></div><div><label for="mtc">${i('Coût','Cost')}</label><input id="mtc" inputmode="decimal" placeholder="${cur}"></div></div></div>
+<div class="acts"><button class="go" onclick="labMat(${n})">${i('Ajouter','Add')}</button></div>${mat?`<div style="margin-top:12px">${mat}</div><p style="margin:8px 0 0"><b>${i('Total des matériaux : ','Materials total: ')}${String(Math.round(matT*100)/100).replace('.',',')} ${cur}</b></p>`:''}`)}
+
+${sec('td','✅','Prochaines étapes','Next steps',x.td.length?tdDone+'/'+x.td.length:'',`<div style="display:flex;gap:6px;align-items:center"><input id="tdt" placeholder="${i('Ex : vernir, encadrer, photographier…','e.g. varnish, frame, photograph…')}" style="margin:0" onkeydown="if(event.key==='Enter')labAdd(${n},'td')"><button class="go" onclick="labAdd(${n},'td')">${i('Ajouter','Add')}</button></div>${td?`<div style="margin-top:12px">${td}</div>`:''}`)}
+
+${sec('tm','⏱','Temps passé','Time spent',h?String(Math.round(h*10)/10).replace('.',',')+' h':'',`<div class="g2"><div><label for="tmh">${i('Heures','Hours')}</label><input id="tmh" inputmode="decimal" placeholder="1,5"></div><div><label for="tmd">Date</label><input id="tmd" type="date" value="${TD()}"></div></div><label for="tmt">${i('Pour quoi (facultatif)','What for (optional)')}</label><input id="tmt">
+<div class="acts"><button class="go" onclick="labTime(${n})">${i('Ajouter','Add')}</button></div>${h?`<p style="margin:12px 0 4px"><b>${i('Total : ','Total: ')}${String(Math.round(h*10)/10).replace('.',',')} h</b>${pr?` · ${i('soit environ','about')} ${String(Math.round((pr-matT)/h*10)/10).replace('.',',')} ${cur}/h ${i('(prix moins matériaux)','(price minus materials)')}`:''}</p>${tm}`:''}`)}
+
+${sec('fi','🗂','Fiche de l’œuvre','Artwork details','',`<label for="ft">${i('Titre','Title')}</label><input id="ft" value="${esc(x.t)}">
+<label for="fk">${i('Technique','Medium')}</label><input id="fk" value="${esc(x.k)}">
+<div class="g2"><div><label for="fs">${i('Dimensions','Size')}</label><input id="fs" value="${esc(x.s)}"></div><div><label for="fy">${i('Année','Year')}</label><input id="fy" value="${esc(x.y)}" inputmode="numeric"></div>
+<div><label for="fp">${i('Prix','Price')}</label><input id="fp" value="${esc(x.p)}" placeholder="${cur}"></div><div><label for="fst">${i('Statut','Status')}</label><select id="fst">${Object.keys(ST).map(k=>`<option value="${k}" ${x.st==k?'selected':''}>${ST[k][fr()?0:1]}</option>`).join('')}</select></div>
+<div><label for="fdl">${i('Échéance','Due date')}</label><input id="fdl" type="date" value="${esc(x.dl||'')}"></div><div><label for="fsu">${i('Support','Support')}</label><input id="fsu" value="${esc(x.su||'')}" placeholder="${i('Toile, papier, bois…','Canvas, paper, wood…')}"></div></div>
+<label for="fin">${i('Intention, message de l’œuvre','Intent, what the piece says')}</label><textarea id="fin" style="min-height:80px">${esc(x.in||'')}</textarea>
+<label for="fnt">${i('Notes (où, à qui, comment)','Notes (where, to whom, how)')}</label><textarea id="fnt" style="min-height:70px">${esc(x.nt||'')}</textarea>
+<div class="acts"><button class="go" onclick="labFiche(${n})">${i('Enregistrer','Save')}</button><button onclick="dw(${n})">${i('Supprimer l’œuvre','Delete the piece')}</button></div>`)}
+
+<div id="mcbox">${sec('mc','💌','Mon mécène : donner des nouvelles','My patron: send an update',shown?shown+' 👁':'',`<p class="muted" style="margin:0">${i('Votre mécène (ou commanditaire) suit la création : vignette, avancement et notes 👁 du journal.','Your patron (or client) follows the piece: thumbnail, progress and 👁 journal notes.')}</p>
+<div class="g2"><div><label for="mcn">${i('Nom','Name')}</label><input id="mcn" value="${esc((x.mc&&x.mc.n)||'')}" list="mcl"><datalist id="mcl">${S.contacts.map(c=>`<option value="${esc(c.n)}">`).join('')}</datalist></div><div><label for="mce">E-mail</label><input id="mce" type="email" value="${esc((x.mc&&x.mc.e)||'')}"></div></div>
+<div class="acts"><button onclick="labMc(${n})">${i('Enregistrer','Save')}</button></div>
+<label for="mct">${i('Message (modifiable)','Message (editable)')}</label><textarea id="mct" style="min-height:160px">${esc(labMsg(x))}</textarea>
+<div class="acts"><button class="go" onclick="labSend(${n})">✉️ ${i('Envoyer par e-mail','Send by email')}</button><button onclick="labShare(${n})">📤 ${i('Partager','Share')}</button><button onclick="labCopy()">📋 ${i('Copier','Copy')}</button><button onclick="labPage(${n})">🖼 ${i('Page d’aperçu à envoyer','Preview page to send')}</button></div>
+<small class="muted">${i('La page d’aperçu est un fichier à joindre à votre e-mail : vignette, avancement et journal 👁 avec leurs photos. Votre mécène l’ouvre dans son navigateur, sans compte.','The preview page is a file to attach to your email: thumbnail, progress and 👁 journal with photos. Your patron opens it in a browser, no account needed.')}</small>`)}</div>`}
+
+function labMsg(x){const p=pcOf(x),g=GS.find(z=>z[0]==(x.g||'done'))||GS[2],v=x.lg.filter(e=>e.m).slice(0,3),nm=S.sig||S.artist.name||'';
+  const hi=x.mc&&x.mc.n?i('Bonjour '+x.mc.n+',','Hello '+x.mc.n+','):i('Bonjour,','Hello,');
+  return [hi,'',i('Voici des nouvelles de « '+x.t+' » : avancement '+p+' %, étape « '+g[1]+' ».','Here is news about “'+x.t+'”: '+p+'% done, stage “'+g[2]+'”.'),
+    v.length?'\n'+v.map(e=>'• '+fmtD(e.d)+' : '+e.t).join('\n'):'',x.dl?'\n'+i('Fin prévue : ','Planned completion: ')+fmtD(x.dl):'','',
+    i('Merci de votre soutien,','Thank you for your support,'),nm].filter((l,j,a)=>!(l===''&&a[j-1]==='')).join('\n').trim()}
+
+function labVig(n,f){const x=wk(n);if(!x||!f)return;setVig(x,f).then(()=>{save();R();toast(i('Vignette changée','Thumbnail changed'))},()=>{})}
+function labVigDel(n){const x=wk(n);ask(i('Retirer la vignette ?','Remove the thumbnail?'),i('Retirer','Remove'),()=>{x.img='';delete x.pdf;delete x.pdfn;delete x.aud;delete x.audn;save();R()})}
+function labPc(n,v){const x=wk(n);x.pc=Math.max(0,Math.min(100,parseInt(v,10)||0));if(x.pc>=100)x.g='done';else if(x.pc>0&&x.g!=='wip')x.g='wip';save();R()}
+function labTog(n,k,j,f){const x=wk(n);const e=x[k][j];if(!e)return;e[f]=!e[f];save();R()}
+function labDel(n,k,j){const x=wk(n),arr=x[k],e=arr[j];if(e==null)return;arr.splice(j,1);save();R();toast(i('Supprimé','Deleted'),()=>{arr.splice(j,0,e);save();R()})}
+function labAdd(n,k){const x=wk(n),el=$(k==='td'?'#tdt':'#idt'),v=el.value.trim();if(!v){el.focus();return}
+  if(k==='td')x.td.push({t:v,ok:false});else x.idees.unshift({d:TD(),t:v,pin:false});save();R();const e2=$(k==='td'?'#tdt':'#idt');if(e2)e2.focus()}
+function storeFile(f){if(!f)return Promise.resolve(null);const k=fileKind(f);
+  if(k==='aud'&&f.size>AUD_MAX){alert(i('Ce son est trop lourd (10 Mo au plus).','This audio file is too heavy (10 MB max).'));return Promise.reject()}
+  const b=k==='img'?shrink(f,1400,true).catch(()=>{badFile();throw 0}):Promise.resolve(f);
+  return b.then(bl=>pdfPut(bl,'f'+uid()).then(id=>({f:id,ft:k,fn:f.name}),()=>{fullDb();throw 0}))}
+function labLog(n){const x=wk(n),t=$('#lgt').value.trim(),f=$('#lgf').files[0];if(!t&&!f){$('#lgt').focus();return}
+  const e={d:$('#lgd').value||TD(),t,pc:pcOf(x),m:$('#lgm').checked};
+  storeFile(f).then(r=>{if(r)Object.assign(e,r);x.lg.unshift(e);x.lg.sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:0);save();R();toast(i('Ajouté au journal','Added to journal'))},()=>{})}
+function labInsp(n){const x=wk(n),u=$('#isu').value.trim(),t=$('#ist').value.trim(),f=$('#isf').files[0];if(!u&&!t&&!f){$('#isu').focus();return}
+  storeFile(f).then(r=>{const e={u:u&&!/^https?:\/\//i.test(u)?'https://'+u:u,t};if(r)Object.assign(e,r);x.insp.unshift(e);save();R()},()=>{})}
+function labPal(n){const x=wk(n),c=$('#plc').value;if(x.pal.indexOf(c)<0)x.pal.push(c);save();R()}
+function labMat(n){const x=wk(n),t=$('#mtt').value.trim();if(!t){$('#mtt').focus();return}x.mat.push({t,q:$('#mtq').value.trim(),c:$('#mtc').value.trim(),ok:false});save();R();const e=$('#mtt');if(e)e.focus()}
+function labTime(n){const x=wk(n),h=num($('#tmh').value);if(!h){$('#tmh').focus();return}x.tm.unshift({d:$('#tmd').value||TD(),h,t:$('#tmt').value.trim()});x.tm.sort((a,b)=>a.d<b.d?1:-1);save();R()}
+function labFiche(n){const x=wk(n),t=$('#ft').value.trim();if(!t){$('#ft').focus();return}
+  Object.assign(x,{t,k:$('#fk').value,s:$('#fs').value,y:$('#fy').value,p:$('#fp').value,st:$('#fst').value,dl:$('#fdl').value,su:$('#fsu').value,in:$('#fin').value,nt:$('#fnt').value});save();R();toast(i('Fiche enregistrée','Details saved'))}
+function labMc(n){const x=wk(n);x.mc={n:$('#mcn').value.trim(),e:$('#mce').value.trim()};
+  if(!x.mc.e&&x.mc.n){const c=S.contacts.find(c=>c.n===x.mc.n);if(c&&c.e)x.mc.e=c.e}save();R();toast(i('Mécène enregistré','Patron saved'))}
+function labCopy(){const t=$('#mct').value;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast(i('Message copié','Message copied')),()=>{const a=$('#mct');a.select();document.execCommand('copy');toast(i('Message copié','Message copied'))})}
+function labSend(n){const x=wk(n),e=(x.mc&&x.mc.e)||$('#mce').value.trim();
+  location.href='mailto:'+encodeURIComponent(e)+'?subject='+encodeURIComponent(i('Nouvelles de « ','News about “')+x.t+i(' »','”'))+'&body='+encodeURIComponent($('#mct').value)}
+function labShare(n){const x=wk(n),text=$('#mct').value,title=x.t;
+  if(!navigator.share){labCopy();return}
+  const go=files=>navigator.share(files&&navigator.canShare&&navigator.canShare({files})?{title,text,files}:{title,text}).catch(()=>{});
+  if(x.img)fetch(x.img).then(r=>r.blob()).then(b=>go([new File([b],'vignette.jpg',{type:'image/jpeg'})])).catch(()=>go());
+  else if(x.pdf||x.aud)pdfGet(x.pdf||x.aud).then(b=>go(b?[new File([b],x.pdfn||x.audn||'fichier',{type:b.type})]:null)).catch(()=>go());
+  else go()}
+/* Page d'aperçu autonome (un fichier .html) pour le mécène */
+function labPage(n){const x=wk(n),v=x.lg.filter(e=>e.m),p=pcOf(x),g=GS.find(z=>z[0]==(x.g||'done'))||GS[2];
+  const toUrl=id=>pdfGet(id).then(b=>b&&new Promise(ok=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=()=>ok(null);r.readAsDataURL(b)})).catch(()=>null);
+  const ids=v.filter(e=>e.f&&(e.ft==='img'||e.ft==='aud')).map(e=>e.f).concat(x.aud?[x.aud]:[]);
+  const urls={};Promise.all(ids.map(id=>toUrl(id).then(u=>{urls[id]=u}))).then(()=>{
+    const med=e=>!e.f?'':e.ft==='img'&&urls[e.f]?`<img src="${urls[e.f]}" alt="">`:e.ft==='aud'&&urls[e.f]?`<audio controls src="${urls[e.f]}"></audio>`:`<p class="doc">📄 ${esc(e.fn||'')} ${i('(document envoyé à part)','(document sent separately)')}</p>`;
+    const vg=x.img?`<img class="vig" src="${esc(x.img)}" alt="">`:x.aud&&urls[x.aud]?`<audio controls src="${urls[x.aud]}"></audio>`:x.pdf?`<p class="doc">📄 ${esc(x.pdfn||'')}</p>`:'';
+    const nm=esc(S.sig||S.artist.name||'');
+    const html=`<!doctype html><html lang="${S.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(x.t)}</title>
+<style>body{margin:0;background:#faf6ee;color:#2a2520;font:17px/1.6 Georgia,serif}main{max-width:760px;margin:0 auto;padding:28px 18px 60px}h1{font-size:2rem;margin:0 0 4px}.m{color:#6b625a;margin:0 0 20px}.vig,img{display:block;max-width:100%;border-radius:12px;margin:12px 0}.bar{height:14px;background:#e8dfd0;border-radius:9px;overflow:hidden}.bar div{height:100%;background:#3a6fd8}.e{background:#fff;border-radius:14px;padding:16px;margin:14px 0;box-shadow:0 2px 12px rgba(0,0,0,.06)}.d{font-weight:bold;color:#6b625a}.doc{color:#6b625a}audio{width:100%;margin:10px 0}footer{margin-top:36px;color:#6b625a;font-size:.9rem}</style></head>
+<body><main><h1>${esc(x.t)}</h1><p class="m">${[x.k,x.s,x.su].filter(Boolean).map(esc).join(' · ')}${nm?' — '+nm:''}</p>${vg}
+<p><b>${i('Avancement','Progress')} : ${p} %</b> · ${esc(g[fr()?1:2])}${x.dl?' · '+i('fin prévue le ','planned for ')+fmtD(x.dl):''}</p><div class="bar"><div style="width:${p}%"></div></div>
+${x.in?`<p style="margin-top:20px;font-style:italic">${esc(x.in)}</p>`:''}
+${v.length?`<h2>${i('Le déroulement','How it’s going')}</h2>`+v.map(e=>`<div class="e"><div class="d">${fmtD(e.d)}${e.pc!=null?' · '+e.pc+' %':''}</div><div style="white-space:pre-wrap">${esc(e.t)}</div>${med(e)}</div>`).join(''):''}
+<footer>${i('Mis à jour le ','Updated on ')}${fmtD(TD())}${nm?' · '+nm:''}</footer></main></body></html>`;
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+    a.download=(i('avancement-','progress-')+x.t).replace(/[^\wÀ-ſ-]+/g,'-').slice(0,60)+'.html';document.body.appendChild(a);a.click();a.remove();
+    toast(i('Page d’aperçu téléchargée : joignez-la à votre e-mail.','Preview page downloaded: attach it to your email.'))})}
 
 R();
 </script></body></html>
